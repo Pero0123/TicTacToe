@@ -1,0 +1,5 @@
+﻿  Source.c
+C:\Users\peros\OneDrive - Atlantic TU\Year 1\Semester 2\C-C++ Programming\C C++ Programming\TicTacToe\TicTacToe\Source.c(18,1): warning C4047: 'initializing': 'int *' differs in levels of indirection from 'int (*)[3]'
+C:\Users\peros\OneDrive - Atlantic TU\Year 1\Semester 2\C-C++ Programming\C C++ Programming\TicTacToe\TicTacToe\Source.c(17,34): warning C4101: 'j': unreferenced local variable
+C:\Users\peros\OneDrive - Atlantic TU\Year 1\Semester 2\C-C++ Programming\C C++ Programming\TicTacToe\TicTacToe\Source.c(17,31): warning C4101: 'i': unreferenced local variable
+  TicTacToe.vcxproj -> C:\Users\peros\OneDrive - Atlantic TU\Year 1\Semester 2\C-C++ Programming\C C++ Programming\TicTacToe\TicTacToe\x64\Debug\TicTacToe.exe

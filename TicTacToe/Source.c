@@ -8,44 +8,55 @@
 #include<time.h>
 #include<string.h>
 
-void PlayerOne(int* grid, int* position);
-void PlayerTwo(int* grid, int* position);
-void CheckWin(int* grid);
+
+
+void RefreshGrid(int* gridPointer);
 
 int main() {
 	//declaring variables
-	int gridArray[3][3] = { 0 }, i, gridPosition[2][2];
-	int* gridPointer = &gridArray[0], PositionPointer = &gridPosition[0];
+	int gridArray[3][3] = { 0 }, i, j,k=1, gridPosition;
+	int* gridPointer = &gridArray[0];
 
 
+	
+	while (k==1)
+	{
+		printf("enter a position on the grid (0-9)");
+		scanf("%i", &gridPosition);
+		printf("\n");
+		
+		if (*(gridPointer+gridPosition) == 0)
+		{
+			*(gridPointer + gridPosition) = 1;
+			RefreshGrid(gridPointer);
+			k = 1;
 
-
+		}
+		else
+		{
+			printf("Invalid Move!\n");
+			printf("\n");
+		}
+	}
 		
 	return 0;
 
 }
-void PlayerOne(int* grid, int* position)
+
+
+//clear console and prints out the grid
+void RefreshGrid(int* gridPointer)
 {
-	printf("Player 1 enter grid location (x y): ");
-	scanf("%i,%i",*position, *position+1);
-	
-	grid[*position][(position + 1)] = 1;
-
-}
-void PlayerTwo(int* grid, int* position)
-{
-	printf("Player 2 enter grid location (x y): ");
-	scanf("%i,%i", *position, *position + 1);
-
-	grid[*position][(position + 1)] = 2;
-
-}
-void CheckWin(int* grid)
-{
-	int winCheck = 0, i;
-
-	if (*grid[0][0])
+	int j, k, n=0;
+	system("cls");
+	for (j = 0; j < 3; j++)
 	{
-
+		for (k = 0; k < 3; k++)
+		{
+			printf("%i ", *(gridPointer + n));
+			n++;
+		}
+		printf("\n");
 	}
 }
+
