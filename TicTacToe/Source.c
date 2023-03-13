@@ -15,9 +15,12 @@ void NPCTurn(char* gridPointer);
 
 int main() {
 	//declaring variables
-	char gridArray[3][3] = {'-','-','-','-','-','-','-','-','-'}, i;
+	char gridArray[3][3] = {'1','2','3','4','5','6','7','8','9'}, i;
 	char* gridPointer = &gridArray[0];
 	int gridPosition;
+	int Round = 0;//variable to keep track of number of turns taken
+	int* roundPointer = &Round;
+	
 	
 	srand(time(NULL));//seeds random number generator
 
@@ -64,39 +67,50 @@ void PlayerTurn(char* gridPointer)
 	int k = 1, gridPosition;
 	while (k == 1)
 	{
-		printf("enter a position on the grid (0-8)");
+		printf("enter a position on the grid (1-9)");
 		scanf("%i", &gridPosition);
 		printf("\n");
 
-		if (*(gridPointer + gridPosition) == 45)//checks if square is empty
+		if (*(gridPointer + gridPosition-1) <= 57&& *(gridPointer + gridPosition-1)>=48)//checks if square is empty
 		{
-			*(gridPointer + gridPosition) = 88;//replaces sqaure with x
+			*(gridPointer + gridPosition-1) = 88;//replaces sqaure with x
 			k = 0; //k = 0 when player succefully places x. exits loop
-
 		}
 		else
 		{
 			printf("Invalid Move!\n");
 			printf("\n");
 		}
+
 	}
 }
 
 //npc opponent. randomly picks a grid location for now
 void NPCTurn(char* gridPointer)
 {
-	
 	int k = 1, gridPosition;
 
 	while (k == 1)
 	{
 		gridPosition = rand() % 9;
-		printf("%i \n", gridPosition);
+		//printf("%i \n", gridPosition);//temporary
 
-		if (*(gridPointer + gridPosition) == 45)//checks if square is "empty"
+		if (*(gridPointer + gridPosition) <= 57 && *(gridPointer + gridPosition) >= 48)//checks if square is "empty"
 		{
-			*(gridPointer + gridPosition) = 79;//places 0 in grid
+			*(gridPointer + gridPosition) = 79;//places O in grid
 			k = 0;//exits loop when computer placed 0
 		}
+		//creates small delay during npc turn
+		printf(".");
+		Sleep(200);
+		printf(".");
+		Sleep(200);
+		printf(".");
+		Sleep(200);
+		printf(".");
+		Sleep(200);
+		printf(".");
+		Sleep(200);
 	}
 }
+
