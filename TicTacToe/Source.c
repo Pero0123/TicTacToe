@@ -48,9 +48,9 @@ void RefreshGrid(char* gridPointer)
 	{
 		for (j = 0; j < 3; j++)
 		{
-			printf("[");
+			printf("|");
 			printf("%c", *(gridPointer + n));
-			printf("]");
+			printf("|");
 			n++;
 		}
 		printf("\n");
