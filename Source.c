@@ -76,7 +76,7 @@ void PlayerTurn(char* gridPointer, int* roundPointer)
 {
 	
 	int k = 1, gridPosition;
-	while (k == 1)
+	while (*roundPointer%2==0)
 	{
 		printf("enter a position on the grid (1-9)");
 		scanf("%i", &gridPosition);
@@ -85,7 +85,6 @@ void PlayerTurn(char* gridPointer, int* roundPointer)
 		if (*(gridPointer + gridPosition-1) <= 57&& *(gridPointer + gridPosition-1)>=48)//checks if square is empty
 		{
 			*(gridPointer + gridPosition-1) = 88;//replaces sqaure with x
-			k = 0; //k = 0 when player succefully places x. exits loop
 			*roundPointer += 1;//incriments the round counter
 		}
 		else
@@ -102,7 +101,7 @@ void NPCTurn(char* gridPointer, int* roundPointer)
 {
 	int k = 1, gridPosition;
 
-	while (k == 1)
+	while (*roundPointer %2 != 0)
 	{
 		gridPosition = rand() % 9;
 		//printf("%i \n", gridPosition);//temporary
@@ -110,7 +109,6 @@ void NPCTurn(char* gridPointer, int* roundPointer)
 		if (*(gridPointer + gridPosition) <= 57 && *(gridPointer + gridPosition) >= 48)//checks if square is "empty"
 		{
 			*(gridPointer + gridPosition) = 79;//places O in grid
-			k = 0;//exits loop when computer placed 0
 			*roundPointer += 1;//incriments the round counter
 
 		}
