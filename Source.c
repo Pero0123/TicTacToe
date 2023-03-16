@@ -156,18 +156,19 @@ void NPCTurn(char* gridPointer, int* roundPointer)
 			*(gridPointer + gridPosition) = 79;//places O in grid
 			*roundPointer += 1;//incriments the round counter
 
+			//creates small delay during npc turn
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
 		}
-		//creates small delay during npc turn
-		printf(".");
-		Sleep(200);
-		printf(".");
-		Sleep(200);
-		printf(".");
-		Sleep(200);
-		printf(".");
-		Sleep(200);
-		printf(".");
-		Sleep(200);
+		
 	}
 }
 
