@@ -13,10 +13,11 @@ void PlayerTurn(char * gridPointer, int* roundPointer);
 void Player2Turn(char* gridPointer, int* roundPointer);
 void RefreshGrid(char* gridPointer);
 void NPCTurn(char* gridPointer, int* roundPointer);
+int convertNumpad(int location);
 
 int main() {
 	//declaring variables
-	char gridArray[3][3] = {'1','2','3','4','5','6','7','8','9'}, i;
+	char gridArray[3][3] = {' ',' ',' ',' ',' ',' ',' ',' ',' '};
 	char* gridPointer = &gridArray[0];
 	int gridPosition, choice;
 	int Round = 0;//variable to keep track of number of turns taken
@@ -43,8 +44,8 @@ int main() {
 				RefreshGrid(gridPointer);
 			}
 		}
-
 	}
+
 	//main loop for player vs player
 	if (choice == 2)
 	{
@@ -65,13 +66,10 @@ int main() {
 
 	}
 	
-
 	return 0;
-
 }
 
-
-//clear console and prints out the grid
+//clears console and prints out the grid
 void RefreshGrid(char* gridPointer)
 {
 	int i, j, n=0;
@@ -101,10 +99,11 @@ void PlayerTurn(char* gridPointer, int* roundPointer)
 		printf("Player 1:");
 		scanf("%i", &gridPosition);
 		printf("\n");
+		gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 
-		if (*(gridPointer + gridPosition-1) <= 57&& *(gridPointer + gridPosition-1)>=48)//checks if square is empty
+		if (*(gridPointer + gridPosition) == 32)//checks if square is empty, 32 asci = space
 		{
-			*(gridPointer + gridPosition-1) = 88;//replaces sqaure with x
+			*(gridPointer + gridPosition) = 88;//replaces sqaure with x
 			*roundPointer += 1;//incriments the round counter
 		}
 		else
@@ -115,6 +114,7 @@ void PlayerTurn(char* gridPointer, int* roundPointer)
 
 	}
 }
+
 //handles turn for player 2
 void Player2Turn(char* gridPointer, int* roundPointer)
 {
@@ -125,10 +125,11 @@ void Player2Turn(char* gridPointer, int* roundPointer)
 		printf("Player 2:");
 		scanf("%i", &gridPosition);
 		printf("\n");
+		gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 
-		if (*(gridPointer + gridPosition-1) <= 57 && *(gridPointer + gridPosition-1) >= 48)//checks if square is "empty"
+		if (*(gridPointer + gridPosition) == 32)//checks if square is "empty". 32 asci = space
 		{
-			*(gridPointer + gridPosition-1) = 79;//places O in grid
+			*(gridPointer + gridPosition) = 79;//places O in grid
 			*roundPointer += 1;//incriments the round counter
 		}
 		else
@@ -140,7 +141,6 @@ void Player2Turn(char* gridPointer, int* roundPointer)
 	}
 }
 
-
 //npc opponent. randomly picks a grid location for now
 void NPCTurn(char* gridPointer, int* roundPointer)
 {
@@ -151,7 +151,7 @@ void NPCTurn(char* gridPointer, int* roundPointer)
 		gridPosition = rand() % 9;
 		//printf("%i \n", gridPosition);//temporary
 
-		if (*(gridPointer + gridPosition) <= 57 && *(gridPointer + gridPosition) >= 48)//checks if square is "empty"
+		if (*(gridPointer + gridPosition) == 32)//checks if square is "empty". 32 asci = space
 		{
 			*(gridPointer + gridPosition) = 79;//places O in grid
 			*roundPointer += 1;//incriments the round counter
@@ -172,13 +172,50 @@ void NPCTurn(char* gridPointer, int* roundPointer)
 	}
 }
 
-
-
+//game menu, displays before game starts
 int GameMenu()
 {
 	int menu;
-	printf("Do You Want To Play against:\n1. The Computer\n2. Another Player\n: ");
+	printf("Do You Want To Play against:\n1. The Computer\n2. Another Player\n ");
 	scanf("%i", &menu);
 
 	return menu;
+}
+
+int convertNumpad(int location)
+{
+	switch (location)
+	{
+	case 1:
+		location = 6;
+		break;
+	case 2:
+		location = 7;
+		break;
+	case 3:
+		location = 8;
+		break;
+	case 4:
+		location = 3;
+		break;
+	case 5:
+		location = 4;
+		break;
+	case 6:
+		location = 5;
+		break;
+	case 7:
+		location = 0;
+		break;
+	case 8:
+		location = 1;
+		break;
+	case 9:
+		location = 2;
+		break;
+
+	default:
+		break;
+	}
+	return location;
 }
