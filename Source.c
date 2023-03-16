@@ -109,7 +109,7 @@ void PlayerTurn(char* gridPointer, int* roundPointer)
 		}
 		else
 		{
-			printf("Invalid Move!\n");
+			printf("Move not allowed!\n");
 			printf("\n");
 		}
 
