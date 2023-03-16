@@ -8,31 +8,43 @@
 #include<time.h>
 #include<string.h>
 
-
-void PlayerTurn(char * gridPointer);
+int GameMenu();
+void PlayerTurn(char * gridPointer, int* roundPointer);
 void RefreshGrid(char* gridPointer);
-void NPCTurn(char* gridPointer);
+void NPCTurn(char* gridPointer, int* roundPointer);
 
 int main() {
 	//declaring variables
 	char gridArray[3][3] = {'1','2','3','4','5','6','7','8','9'}, i;
 	char* gridPointer = &gridArray[0];
-	int gridPosition;
+	int gridPosition, choice;
 	int Round = 0;//variable to keep track of number of turns taken
-	int* roundPointer = &Round;
+	int* roundPointer = &Round, choicePointer = & choice;
 	
 	
 	srand(time(NULL));//seeds random number generator
 
 
-	//main game loop -currently just runs 5 times
-	for (i = 0; i < 5; i++)
+	//main game loop for playing against the  computer
+	if (GameMenu() == 1)
 	{
-		RefreshGrid(gridPointer);//print array
-		PlayerTurn(gridPointer);//player turn
-		RefreshGrid(gridPointer);//print array
-		NPCTurn(gridPointer);//computer turn
+		RefreshGrid(gridPointer);
+		while(Round<8)
+		{
+			if (Round % 2 == 0)
+			{
+				PlayerTurn(gridPointer,roundPointer);
+				RefreshGrid(gridPointer);
+			}
+			if (Round % 2 != 0)
+			{
+				NPCTurn(gridPointer,roundPointer);
+				RefreshGrid(gridPointer);
+			}
+		}
+
 	}
+	
 
 	return 0;
 
@@ -60,7 +72,7 @@ void RefreshGrid(char* gridPointer)
 }
 
 //promts player for a position and checks if its valid
-void PlayerTurn(char* gridPointer)
+void PlayerTurn(char* gridPointer, int* roundPointer)
 {
 	
 	int k = 1, gridPosition;
@@ -74,6 +86,7 @@ void PlayerTurn(char* gridPointer)
 		{
 			*(gridPointer + gridPosition-1) = 88;//replaces sqaure with x
 			k = 0; //k = 0 when player succefully places x. exits loop
+			*roundPointer += 1;//incriments the round counter
 		}
 		else
 		{
@@ -85,7 +98,7 @@ void PlayerTurn(char* gridPointer)
 }
 
 //npc opponent. randomly picks a grid location for now
-void NPCTurn(char* gridPointer)
+void NPCTurn(char* gridPointer, int* roundPointer)
 {
 	int k = 1, gridPosition;
 
@@ -98,6 +111,8 @@ void NPCTurn(char* gridPointer)
 		{
 			*(gridPointer + gridPosition) = 79;//places O in grid
 			k = 0;//exits loop when computer placed 0
+			*roundPointer += 1;//incriments the round counter
+
 		}
 		//creates small delay during npc turn
 		printf(".");
@@ -113,3 +128,13 @@ void NPCTurn(char* gridPointer)
 	}
 }
 
+
+
+int GameMenu()
+{
+	int choice;
+	printf("Do You Want To Play against:\n1. The Computer\n2. Another Player\n: ");
+	scanf("%i", &choice);
+
+	return choice;
+}
