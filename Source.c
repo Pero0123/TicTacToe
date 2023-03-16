@@ -8,31 +8,63 @@
 #include<time.h>
 #include<string.h>
 
-
-void PlayerTurn(char * gridPointer);
+int GameMenu();
+void PlayerTurn(char * gridPointer, int* roundPointer);
+void Player2Turn(char* gridPointer, int* roundPointer);
 void RefreshGrid(char* gridPointer);
-void NPCTurn(char* gridPointer);
+void NPCTurn(char* gridPointer, int* roundPointer);
 
 int main() {
 	//declaring variables
 	char gridArray[3][3] = {'1','2','3','4','5','6','7','8','9'}, i;
 	char* gridPointer = &gridArray[0];
-	int gridPosition;
+	int gridPosition, choice;
 	int Round = 0;//variable to keep track of number of turns taken
-	int* roundPointer = &Round;
+	int* roundPointer = &Round, choicePointer = &choice;
 	
 	
 	srand(time(NULL));//seeds random number generator
 
-
-	//main game loop -currently just runs 5 times
-	for (i = 0; i < 5; i++)
+	choice=GameMenu();
+	//main loop for player vs computer
+	if (choice == 1)
 	{
-		RefreshGrid(gridPointer);//print array
-		PlayerTurn(gridPointer);//player turn
-		RefreshGrid(gridPointer);//print array
-		NPCTurn(gridPointer);//computer turn
+		RefreshGrid(gridPointer);
+		while(Round<8)
+		{
+			if (Round % 2 == 0)
+			{
+				PlayerTurn(gridPointer,roundPointer);
+				RefreshGrid(gridPointer);
+			}
+			if (Round % 2 != 0)
+			{
+				NPCTurn(gridPointer,roundPointer);
+				RefreshGrid(gridPointer);
+			}
+		}
+
 	}
+	//main loop for player vs player
+	if (choice == 2)
+	{
+		RefreshGrid(gridPointer);
+		while (Round < 8)
+		{
+			if (Round % 2 == 0)
+			{
+				PlayerTurn(gridPointer, roundPointer);
+				RefreshGrid(gridPointer);
+			}
+			if (Round % 2 != 0)
+			{
+				Player2Turn(gridPointer, roundPointer);
+				RefreshGrid(gridPointer);
+			}
+		}
+
+	}
+	
 
 	return 0;
 
@@ -60,20 +92,44 @@ void RefreshGrid(char* gridPointer)
 }
 
 //promts player for a position and checks if its valid
-void PlayerTurn(char* gridPointer)
+void PlayerTurn(char* gridPointer, int* roundPointer)
 {
 	
-	int k = 1, gridPosition;
-	while (k == 1)
+	int gridPosition;
+	while (*roundPointer%2==0)//attempts turn until succefull
 	{
-		printf("enter a position on the grid (1-9)");
+		printf("Player 1:");
 		scanf("%i", &gridPosition);
 		printf("\n");
 
 		if (*(gridPointer + gridPosition-1) <= 57&& *(gridPointer + gridPosition-1)>=48)//checks if square is empty
 		{
 			*(gridPointer + gridPosition-1) = 88;//replaces sqaure with x
-			k = 0; //k = 0 when player succefully places x. exits loop
+			*roundPointer += 1;//incriments the round counter
+		}
+		else
+		{
+			printf("Invalid Move!\n");
+			printf("\n");
+		}
+
+	}
+}
+//handles turn for player 2
+void Player2Turn(char* gridPointer, int* roundPointer)
+{
+
+	int gridPosition;
+	while (*roundPointer % 2 != 0) //attempts to take turn until succefull
+	{
+		printf("Player 2:");
+		scanf("%i", &gridPosition);
+		printf("\n");
+
+		if (*(gridPointer + gridPosition-1) <= 57 && *(gridPointer + gridPosition-1) >= 48)//checks if square is "empty"
+		{
+			*(gridPointer + gridPosition-1) = 79;//places O in grid
+			*roundPointer += 1;//incriments the round counter
 		}
 		else
 		{
@@ -84,12 +140,13 @@ void PlayerTurn(char* gridPointer)
 	}
 }
 
-//npc opponent. randomly picks a grid location for now
-void NPCTurn(char* gridPointer)
-{
-	int k = 1, gridPosition;
 
-	while (k == 1)
+//npc opponent. randomly picks a grid location for now
+void NPCTurn(char* gridPointer, int* roundPointer)
+{
+	int gridPosition;
+
+	while (*roundPointer %2 != 0) //attempts to take turn until succefull
 	{
 		gridPosition = rand() % 9;
 		//printf("%i \n", gridPosition);//temporary
@@ -97,19 +154,31 @@ void NPCTurn(char* gridPointer)
 		if (*(gridPointer + gridPosition) <= 57 && *(gridPointer + gridPosition) >= 48)//checks if square is "empty"
 		{
 			*(gridPointer + gridPosition) = 79;//places O in grid
-			k = 0;//exits loop when computer placed 0
+			*roundPointer += 1;//incriments the round counter
+
+			//creates small delay during npc turn
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
 		}
-		//creates small delay during npc turn
-		printf(".");
-		Sleep(200);
-		printf(".");
-		Sleep(200);
-		printf(".");
-		Sleep(200);
-		printf(".");
-		Sleep(200);
-		printf(".");
-		Sleep(200);
+		
 	}
 }
 
+
+
+int GameMenu()
+{
+	int menu;
+	printf("Do You Want To Play against:\n1. The Computer\n2. Another Player\n: ");
+	scanf("%i", &menu);
+
+	return menu;
+}
