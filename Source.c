@@ -115,12 +115,12 @@ void PlayerTurn(char* gridPointer, int* roundPointer)
 
 	}
 }
-//handles turn for player 2
+//checks turn for player 2
 void Player2Turn(char* gridPointer, int* roundPointer)
 {
 
 	int gridPosition;
-	while (*roundPointer % 2 != 0) //attempts to take turn until succefull
+	while (*roundPointer % 2 != 0) //The attempts to take turn until succefull
 	{
 		printf("Player 2:");
 		scanf("%i", &gridPosition);
@@ -133,7 +133,7 @@ void Player2Turn(char* gridPointer, int* roundPointer)
 		}
 		else
 		{
-			printf("Invalid Move!\n");
+			printf("Move not allowed\n");
 			printf("\n");
 		}
 
@@ -176,9 +176,9 @@ void NPCTurn(char* gridPointer, int* roundPointer)
 
 int GameMenu()
 {
-	int menu;
-	printf("Do You Want To Play against:\n1. The Computer\n2. Another Player\n: ");
-	scanf("%i", &menu);
+	int menu1;
+	printf("Pick who you would like to play against:\n1. The Computer\n2. Another Player\n: ");
+	scanf("%i", &menu1);
 
-	return menu;
+	return menu1;
 }
