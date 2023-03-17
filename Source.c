@@ -1,6 +1,6 @@
 //Pero
 //Tic Tac Toe Project
-//05/03/2023
+//05/03/2023  **  
 
 #include<stdio.h>
 #include<stdint.h>
@@ -13,7 +13,7 @@ void Player1Turn(char * gridPointer, int* roundPointer);//handles player ones tu
 void Player2Turn(char* gridPointer, int* roundPointer);//handles player twos turn
 void RefreshGrid(char* gridPointer);//clears console and printd grid
 void printCharacter(char* gridPointer, int line, int location);//fill grid with characters. used with refresh grid.
-void NPCTurn(char* gridPointer, int* roundPointer); //handles computers turn
+void ComputerTurn(char* gridPointer, int* roundPointer); //handles computers turn
 int convertNumpad(int location); //converts numpad input to relevant grid number
 
 int main() {
@@ -43,7 +43,7 @@ int main() {
 			}
 			if (Round % 2 != 0)
 			{
-				NPCTurn(gridPointer,roundPointer);
+				ComputerTurn(gridPointer,roundPointer);
 				RefreshGrid(gridPointer);
 			}
 		}
@@ -80,25 +80,29 @@ void RefreshGrid(char* gridPointer)
 
 	//prints out the game grid accroding to whats stored in grid array. uses printCharacter function to print x or os
 
-	printf("\n\n    ######################################### \n");
-	printf("    ##         "); printf("  ##         "); printf("  ##         "); printf("  ##  \n");
-	printf("    ##  "); location = 0; printCharacter(gridPointer, line, location); printf("  ##  "); location = 1; printCharacter(gridPointer, line, location); printf("  ##  "); location = 2; printCharacter(gridPointer, line, location); printf("  ##  \n"); line = 2;
-	printf("    ##  "); location = 0; printCharacter(gridPointer, line, location); printf("  ##  "); location = 1; printCharacter(gridPointer, line, location); printf("  ##  "); location = 2; printCharacter(gridPointer, line, location); printf("  ##  \n"); line = 1;
-	printf("    ##  "); location = 0; printCharacter(gridPointer, line, location); printf("  ##  "); location = 1; printCharacter(gridPointer, line, location); printf("  ##  "); location = 2; printCharacter(gridPointer, line, location); printf("  ##  \n");
-	printf("    ##         "); printf("  ##         "); printf("  ##         "); printf("  ##  \n");
-	printf("    ######################################### \n");
-	printf("    ##         "); printf("  ##         "); printf("  ##         "); printf("  ##  \n");
-	printf("    ##  "); location = 3; printCharacter(gridPointer, line, location); printf("  ##  "); location = 4; printCharacter(gridPointer, line, location); printf("  ##  "); location = 5; printCharacter(gridPointer, line, location); printf("  ##  \n"); line = 2;
-	printf("    ##  "); location = 3; printCharacter(gridPointer, line, location); printf("  ##  "); location = 4; printCharacter(gridPointer, line, location); printf("  ##  "); location = 5; printCharacter(gridPointer, line, location); printf("  ##  \n"); line = 1;
-	printf("    ##  "); location = 3; printCharacter(gridPointer, line, location); printf("  ##  "); location = 4; printCharacter(gridPointer, line, location); printf("  ##  "); location = 5; printCharacter(gridPointer, line, location); printf("  ##  \n");
-	printf("    ##         "); printf("  ##         "); printf("  ##         "); printf("  ##  \n");
-	printf("    ######################################### \n");
-	printf("    ##         "); printf("  ##         "); printf("  ##         "); printf("  ##  \n");
-	printf("    ##  "); location = 6; printCharacter(gridPointer, line, location); printf("  ##  "); location = 7; printCharacter(gridPointer, line, location); printf("  ##  "); location = 8; printCharacter(gridPointer, line, location); printf("  ##  \n"); line = 2;
-	printf("    ##  "); location = 6; printCharacter(gridPointer, line, location); printf("  ##  "); location = 7; printCharacter(gridPointer, line, location); printf("  ##  "); location = 8; printCharacter(gridPointer, line, location); printf("  ##  \n"); line = 1;
-	printf("    ##  "); location = 6; printCharacter(gridPointer, line, location); printf("  ##  "); location = 7; printCharacter(gridPointer, line, location); printf("  ##  "); location = 8; printCharacter(gridPointer, line, location); printf("  ##  \n");
-	printf("    ##         "); printf("  ##         "); printf("  ##         "); printf("  ##  \n");
-	printf("    ######################################### \n");
+	printf("\n\n    ***************************************** \n");
+	printf("    ***************************************** \n");
+	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");
+	printf("    **  "); location = 0; printCharacter(gridPointer, line, location); printf("  **  "); location = 1; printCharacter(gridPointer, line, location); printf("  **  "); location = 2; printCharacter(gridPointer, line, location); printf("  **  \n"); line = 2;
+	printf("    **  "); location = 0; printCharacter(gridPointer, line, location); printf("  **  "); location = 1; printCharacter(gridPointer, line, location); printf("  **  "); location = 2; printCharacter(gridPointer, line, location); printf("  **  \n"); line = 1;
+	printf("    **  "); location = 0; printCharacter(gridPointer, line, location); printf("  **  "); location = 1; printCharacter(gridPointer, line, location); printf("  **  "); location = 2; printCharacter(gridPointer, line, location); printf("  **  \n");
+	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");
+	printf("    ***************************************** \n");
+	printf("    ***************************************** \n");
+	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");
+	printf("    **  "); location = 3; printCharacter(gridPointer, line, location); printf("  **  "); location = 4; printCharacter(gridPointer, line, location); printf("  **  "); location = 5; printCharacter(gridPointer, line, location); printf("  **  \n"); line = 2;
+	printf("    **  "); location = 3; printCharacter(gridPointer, line, location); printf("  **  "); location = 4; printCharacter(gridPointer, line, location); printf("  **  "); location = 5; printCharacter(gridPointer, line, location); printf("  **  \n"); line = 1;
+	printf("    **  "); location = 3; printCharacter(gridPointer, line, location); printf("  **  "); location = 4; printCharacter(gridPointer, line, location); printf("  **  "); location = 5; printCharacter(gridPointer, line, location); printf("  **  \n");
+	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");
+	printf("    ***************************************** \n");
+	printf("    ***************************************** \n");
+	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");
+	printf("    **  "); location = 6; printCharacter(gridPointer, line, location); printf("  **  "); location = 7; printCharacter(gridPointer, line, location); printf("  **  "); location = 8; printCharacter(gridPointer, line, location); printf("  **  \n"); line = 2;
+	printf("    **  "); location = 6; printCharacter(gridPointer, line, location); printf("  **  "); location = 7; printCharacter(gridPointer, line, location); printf("  **  "); location = 8; printCharacter(gridPointer, line, location); printf("  **  \n"); line = 1;
+	printf("    **  "); location = 6; printCharacter(gridPointer, line, location); printf("  **  "); location = 7; printCharacter(gridPointer, line, location); printf("  **  "); location = 8; printCharacter(gridPointer, line, location); printf("  **  \n");
+	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");
+	printf("    ***************************************** \n");
+	printf("    ***************************************** \n");
 }
 
 //prints out an x or o in the grid location. used by the refresh grid funtion
@@ -184,8 +188,8 @@ void Player2Turn(char* gridPointer, int* roundPointer)
 	}
 }
 
-//npc opponent. randomly picks a grid location for now
-void NPCTurn(char* gridPointer, int* roundPointer)
+//computer opponent. randomly picks a grid location for now
+void ComputerTurn(char* gridPointer, int* roundPointer)
 {
 	int gridPosition;
 
