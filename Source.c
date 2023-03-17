@@ -175,7 +175,51 @@ void NPCTurn(char* gridPointer, int* roundPointer)
 //game menu, displays before game starts
 int GameMenu()
 {
+	
+	
 	int menu;
+
+	//Prints title screen
+	//Tic
+	printf("****************       ******       *************\n");
+	printf("*              *       *    *       *           *\n");
+	printf("******   *******       *    *       *   *********\n");
+	printf("     *   *             *    *       *   *\n");
+	printf("     *   *             *    *       *   *\n");
+	printf("     *   *             *    *       *   *\n");
+	printf("     *   *             *    *       *   *\n");
+	printf("     *   *             *    *       *   *\n");
+	printf("     *   *             *    *       *   *********\n");
+	printf("     *   *             *    *       *           *\n");
+	printf("     *****             ******       *************\n\n\n\n");
+
+	//Tac
+	printf("****************        *             *************\n");
+	printf("*              *       * *            *           *\n");
+	printf("******   *******      *   *           *   *********\n");
+	printf("     *   *           *     *          *   *\n");
+	printf("     *   *          *   *   *         *   *\n");
+	printf("     *   *         *   * *   *        *   *\n");
+	printf("     *   *        *   *****   *       *   *\n");
+	printf("     *   *       *             *      *   *\n");
+	printf("     *   *      *   *********   *     *   *********\n");
+	printf("     *   *     *   *         *   *    *           *\n");
+	printf("     *****    *****           *****   *************\n\n\n\n");
+
+	//Toe
+	printf("****************     *************     ************\n");
+	printf("*              *     *           *     *          *\n");
+	printf("******   *******     *   *****   *     *   ********\n");
+	printf("     *   *           *   *   *   *     *   *\n");
+	printf("     *   *           *   *   *   *     *   ********\n");
+	printf("     *   *           *   *   *   *     *          *\n");
+	printf("     *   *           *   *   *   *     *   ********\n"); 
+	printf("     *   *           *   *   *   *     *   *\n");
+	printf("     *   *           *   *****   *     *   ********\n");
+	printf("     *   *           *           *     *          *\n");
+	printf("     *****           *************     ************\n\n\n\n");
+
+
 	printf("Do You Want To Play against:\n1. The Computer\n2. Another Player\n ");
 	scanf("%i", &menu);
 
