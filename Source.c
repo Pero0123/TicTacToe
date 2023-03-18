@@ -30,7 +30,7 @@ int main() {
 	int* roundPointer = &Round, choicePointer = &choice;
 	
 	srand(time(NULL));//seeds random number generator
-	choice=GameMenu();
+	choice = 1;//GameMenu();
 
 	//main loop for player vs computer
 	if (choice == 1)
@@ -192,6 +192,8 @@ void Player2Turn(char* gridPointer, int* roundPointer)
 {
 
 	int gridPosition;
+
+
 	while (*roundPointer % 2 != 0) //attempts to take turn until succefull
 	{
 		printf("Player 2:");
@@ -216,7 +218,100 @@ void Player2Turn(char* gridPointer, int* roundPointer)
 //computer opponent. randomly picks a grid location for now
 void ComputerTurn(char* gridPointer, int* roundPointer)
 {
-	int gridPosition;
+	int gridPosition,i,sum;
+	sum = 0;
+	int winMove[3] = {0};
+
+
+	//checks if there is a winning move. winMove has the 3 grid locations where a winning move is possible
+	if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == 190)
+	{
+		winMove[0] = 0;
+		winMove[1] = 1;
+		winMove[2] = 2;
+		sum = 190;
+	}
+
+	if (*(gridPointer + 3) + *(gridPointer + 4) + *(gridPointer + 5) == 190)
+	{
+		winMove[0] = 3;
+		winMove[1] = 4;
+		winMove[2] = 5;		
+		sum = 190;
+	}
+
+	if (*(gridPointer + 6) + *(gridPointer + 7) + *(gridPointer + 8) == 190)
+	{
+		winMove[0] = 6;
+		winMove[1] = 7;
+		winMove[2] = 8;
+		sum = 190;
+	}
+
+	if (*(gridPointer + 0) + *(gridPointer + 4) + *(gridPointer + 8) == 190)
+	{
+		winMove[0] = 0;
+		winMove[1] = 4;
+		winMove[2] = 8;
+		sum = 190;
+	}
+
+	if (*(gridPointer + 2) + *(gridPointer + 4) + *(gridPointer + 6) == 190)
+	{
+		winMove[0] = 2;
+		winMove[1] = 4;
+		winMove[2] = 6;
+		sum = 190;
+	}
+
+	if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == 190)
+	{
+		winMove[0] = 0;
+		winMove[1] = 3;
+		winMove[2] = 6;
+		sum = 190;
+	}
+	if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == 190)
+	{
+		winMove[0] = 1;
+		winMove[1] = 4;
+		winMove[2] = 7;
+		sum = 190;
+	}
+	if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == 190)
+	{
+		winMove[0] = 2;
+		winMove[1] = 5;
+		winMove[2] = 8;
+		sum = 190;
+	}
+
+
+	//if winning is possible, computer will pick from that row until succesfull
+	while (sum == 190) //attempts to take turn until succefull
+	{
+		gridPosition = winMove[rand() % 3];
+
+
+		if (*(gridPointer + gridPosition) == 32)//checks if square is "empty". 32 asci = space
+		{
+			*(gridPointer + gridPosition) = 79;//places O in grid
+			*roundPointer += 1;//incriments the round counter
+			sum = 0;
+
+			//creates small delay during npc turn
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
+			printf(".");
+			Sleep(200);
+		}
+	}
 
 	while (*roundPointer %2 != 0) //attempts to take turn until succefull
 	{
@@ -240,7 +335,6 @@ void ComputerTurn(char* gridPointer, int* roundPointer)
 			printf(".");
 			Sleep(200);
 		}
-		
 	}
 }
 
@@ -249,7 +343,7 @@ int GameMenu()
 {
 
 
-	int menu, delay = 10;
+	int menu, delay = 50;
 
 	//Prints title screen
 	//Tic
