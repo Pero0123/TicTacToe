@@ -107,9 +107,9 @@ void RefreshGrid(char* gridPointer, int delay)
 	//prints out the game grid accroding to whats stored in grid array. uses printCharacter function to print x or os
 
 	printf("\n\n    ***************************************** \n");Sleep(delay);
-
 	printf("    ***************************************** \n");Sleep(delay);
 	printf("    **       "); printf("    **       "); printf("    **       "); printf("    **       \n");Sleep(delay);
+	
 	for (line = 1; line <= 3; line++)
 	{
 		printf("    **  ");
@@ -119,10 +119,12 @@ void RefreshGrid(char* gridPointer, int delay)
 		}
 		printf("\n");
 	}
+
 	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");Sleep(delay);
 	printf("    ***************************************** \n");Sleep(delay);
 	printf("    ***************************************** \n");Sleep(delay);
 	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");Sleep(delay);
+	
 	for (line = 1; line <= 3; line++)
 	{
 		printf("    **  ");
@@ -133,9 +135,6 @@ void RefreshGrid(char* gridPointer, int delay)
 		printf("\n");
 	}
 	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");Sleep(delay);
-
-	
-
 	printf("    ***************************************** \n");Sleep(delay);
 	printf("    ***************************************** \n");Sleep(delay);
 	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");Sleep(delay);
@@ -152,7 +151,7 @@ void RefreshGrid(char* gridPointer, int delay)
 
 	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");Sleep(delay);
 	printf("    ***************************************** \n");Sleep(delay);
-	printf("    ***************************************** \n");Sleep(delay);
+	printf("    ***************************************** \n\n\n");Sleep(delay);
 
 }
 
