@@ -479,68 +479,83 @@ int Checkwin(char* gridPointer, int* roundPointer, int difficulty)
 {
 	int gridPosition, i;
 	int sum = 0;
-	int k = 190;
+	int k = 264;
 	int winMove[3] = { 0 };
 
 
 	//checks if there is a winning move. 0 = easy, 1 = medium, 2 = hard mode.
-	for (i = 0; i < difficulty && sum == 0; i++)
+	for (i = 0; i < 2 && sum == 0; i++)
 	{
 		if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
 		{
 			winMove[0] = 0;
 			winMove[1] = 1;
 			winMove[2] = 2;
-			sum = 190;
+			sum = 264;
 		}
 		else if (*(gridPointer + 3) + *(gridPointer + 4) + *(gridPointer + 5) == k)
 		{
 			winMove[0] = 3;
 			winMove[1] = 4;
 			winMove[2] = 5;
-			sum = 190;
+			sum = 264;
 		}
 		else if (*(gridPointer + 6) + *(gridPointer + 7) + *(gridPointer + 8) == k)
 		{
 			winMove[0] = 6;
 			winMove[1] = 7;
 			winMove[2] = 8;
-			sum = 190;
+			sum = 264;
 		}
 		else if (*(gridPointer + 0) + *(gridPointer + 4) + *(gridPointer + 8) == k)
 		{
 			winMove[0] = 0;
 			winMove[1] = 4;
 			winMove[2] = 8;
-			sum = 190;
+			sum = 264;
 		}
 		else if (*(gridPointer + 2) + *(gridPointer + 4) + *(gridPointer + 6) == k)
 		{
 			winMove[0] = 2;
 			winMove[1] = 4;
 			winMove[2] = 6;
-			sum = 190;
+			sum = 264;
 		}
 		else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
 		{
 			winMove[0] = 0;
 			winMove[1] = 3;
 			winMove[2] = 6;
-			sum = 190;
+			sum = 264;
 		}
 		else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
 		{
 			winMove[0] = 1;
 			winMove[1] = 4;
 			winMove[2] = 7;
-			sum = 190;
+			sum = 264;
 		}
 		else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
 		{
 			winMove[0] = 2;
 			winMove[1] = 5;
 			winMove[2] = 8;
-			sum = 190;
+			sum = 264;
 		}
-		k = 208;
+		k = 237;
+
+	}
+
+	switch (sum)
+	{
+	case 0:
+		return 0;
+		break;
+	case 264:
+		return 1;
+		break;
+	case 237:
+		return 2;
+		break;
+
 	}
