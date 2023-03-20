@@ -1,4 +1,4 @@
-//Pero
+//Pero. Alex. Sam
 //Tic Tac Toe Project
 //05/03/2023  **  
 
@@ -16,7 +16,7 @@ void RefreshGrid(char* gridPointer, int delay);//clears console and printd grid
 void printCharacter(char* gridPointer, int line, int location);//fill grid with characters. used with refresh grid.
 void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handles computers turn
 int convertNumpad(int location); //converts numpad input to relevant grid number
-
+int Checkwin(char* gridPointer, int* roundPointer);// Checks for win, retunrs int for winner 
 int main() {
 
 	// maximize window
@@ -31,7 +31,7 @@ int main() {
 	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty.
 	
 	srand(time(NULL));//seeds random number generator
-	//GameMenu(menuPointer);
+	GameMenu(menuPointer);
 
 	//main loop for player vs computer
 	if (*menuPointer == 1)
@@ -49,17 +49,19 @@ int main() {
 		Sleep(10);
 		RefreshGrid(gridPointer, 0);
 
-		while(Round<8)
+		while (Checkwin(gridPointer, roundPointer) == 0)
 		{
-			if (Round % 2 == 0)
+			if (Round % 2 == 0&& Checkwin(gridPointer, roundPointer) == 0)
 			{
 				Player1Turn(gridPointer,roundPointer);
 				RefreshGrid(gridPointer,0);
+				Checkwin(gridPointer, roundPointer);
 			}
-			if (Round % 2 != 0)
+			if (Round % 2 != 0&& Checkwin(gridPointer, roundPointer) == 0)
 			{
 				ComputerTurn(gridPointer,roundPointer, menu[1]);
 				RefreshGrid(gridPointer,0);
+				Checkwin(gridPointer, roundPointer);
 			}
 		}
 	}
@@ -80,17 +82,19 @@ int main() {
 		Sleep(10);
 		RefreshGrid(gridPointer, 0);
 
-		while (Round < 8)
+		while (Checkwin(gridPointer, roundPointer) == 0)
 		{
-			if (Round % 2 == 0)
+			if (Round % 2 == 0 && Checkwin(gridPointer, roundPointer)==0)
 			{
 				Player1Turn(gridPointer, roundPointer);
 				RefreshGrid(gridPointer,0);
+				Checkwin(gridPointer, roundPointer);
 			}
-			if (Round % 2 != 0)
+			if (Round % 2 != 0 && Checkwin(gridPointer, roundPointer) == 0)
 			{
 				Player2Turn(gridPointer, roundPointer);
 				RefreshGrid(gridPointer,0);
+				Checkwin(gridPointer, roundPointer);
 			}
 		}
 	}
@@ -206,7 +210,7 @@ void Player1Turn(char* gridPointer, int* roundPointer)
 		printf("Player 1:");
 		scanf("%i", &gridPosition);
 		printf("\n");
-		gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
+		//gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 
 		if (*(gridPointer + gridPosition) == 32)//checks if square is empty, 32 asci = space
 		{
@@ -234,7 +238,7 @@ void Player2Turn(char* gridPointer, int* roundPointer)
 		printf("Player 2:");
 		scanf("%i", &gridPosition);
 		printf("\n");
-		gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
+		//gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 
 		if (*(gridPointer + gridPosition) == 32)//checks if square is "empty". 32 asci = space
 		{
@@ -350,7 +354,7 @@ void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty)
 	while (*roundPointer %2 != 0) //attempts to take turn until succefull
 	{
 		gridPosition = rand() % 9;
-		//printf("%i \n", gridPosition);//temporary
+
 
 		if (*(gridPointer + gridPosition) == 32)//checks if square is "empty". 32 asci = space
 		{
@@ -473,4 +477,154 @@ int convertNumpad(int location)
 		break;
 	}
 	return location;
+}
+
+int Checkwin(char* gridPointer, int* roundPointer)
+{
+	int gridPosition, i;
+	int sum = 0;
+	int k = 264;
+	int winMove[3] = { 0 };
+
+
+	//checks if there is a winning move. 0 = easy, 1 = medium, 2 = hard mode.
+	
+		if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
+		{
+			winMove[0] = 0;
+			winMove[1] = 1;
+			winMove[2] = 2;
+			sum = 264;
+		}
+		else if (*(gridPointer + 3) + *(gridPointer + 4) + *(gridPointer + 5) == k)
+		{
+			winMove[0] = 3;
+			winMove[1] = 4;
+			winMove[2] = 5;
+			sum = 264;
+		}
+		else if (*(gridPointer + 6) + *(gridPointer + 7) + *(gridPointer + 8) == k)
+		{
+			winMove[0] = 6;
+			winMove[1] = 7;
+			winMove[2] = 8;
+			sum = 264;
+		}
+		else if (*(gridPointer + 0) + *(gridPointer + 4) + *(gridPointer + 8) == k)
+		{
+			winMove[0] = 0;
+			winMove[1] = 4;
+			winMove[2] = 8;
+			sum = 264;
+		}
+		else if (*(gridPointer + 2) + *(gridPointer + 4) + *(gridPointer + 6) == k)
+		{
+			winMove[0] = 2;
+			winMove[1] = 4;
+			winMove[2] = 6;
+			sum = 264;
+		}
+		else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
+		{
+			winMove[0] = 0;
+			winMove[1] = 3;
+			winMove[2] = 6;
+			sum = 264;
+		}
+		else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
+		{
+			winMove[0] = 1;
+			winMove[1] = 4;
+			winMove[2] = 7;
+			sum = 264;
+		}
+		else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
+		{
+			winMove[0] = 2;
+			winMove[1] = 5;
+			winMove[2] = 8;
+			sum = 264;
+		}
+		
+		k = 237;
+	if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
+	{
+		winMove[0] = 0;
+		winMove[1] = 1;
+		winMove[2] = 2;
+		sum = 237;
+	}
+	else if (*(gridPointer + 3) + *(gridPointer + 4) + *(gridPointer + 5) == k)
+	{
+		winMove[0] = 3;
+		winMove[1] = 4;
+		winMove[2] = 5;
+		sum = 237;
+	}
+	else if (*(gridPointer + 6) + *(gridPointer + 7) + *(gridPointer + 8) == k)
+	{
+		winMove[0] = 6;
+		winMove[1] = 7;
+		winMove[2] = 8;
+		sum = 237;
+	}
+	else if (*(gridPointer + 0) + *(gridPointer + 4) + *(gridPointer + 8) == k)
+	{
+		winMove[0] = 0;
+		winMove[1] = 4;
+		winMove[2] = 8;
+		sum = 237;
+	}
+	else if (*(gridPointer + 2) + *(gridPointer + 4) + *(gridPointer + 6) == k)
+	{
+		winMove[0] = 2;
+		winMove[1] = 4;
+		winMove[2] = 6;
+		sum = 237;
+	}
+	else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
+	{
+		winMove[0] = 0;
+		winMove[1] = 3;
+		winMove[2] = 6;
+		sum = 237;
+	}
+	else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
+	{
+		winMove[0] = 1;
+		winMove[1] = 4;
+		winMove[2] = 7;
+		sum = 237;
+	}
+	else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
+	{
+		winMove[0] = 2;
+		winMove[1] = 5;
+		winMove[2] = 8;
+		sum = 237;
+	}
+
+	switch (sum)
+	{
+	case 0:
+		if (*roundPointer < 9) {
+			printf("Continue");
+			return 0;
+			
+		}
+		else {
+			return 1;
+			printf("Draw");
+		}
+		break;
+	case 264:
+		printf("X wins");
+		return 2;
+		break;
+	case 237:
+		printf("O wins");
+		return 3;
+		break;
+
+	}
 }
