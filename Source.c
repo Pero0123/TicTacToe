@@ -16,7 +16,7 @@ void RefreshGrid(char* gridPointer, int delay);//clears console and printd grid
 void printCharacter(char* gridPointer, int line, int location);//fill grid with characters. used with refresh grid.
 void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handles computers turn
 int convertNumpad(int location); //converts numpad input to relevant grid number
-int Checkwin(char* gridPointer, int* roundPointer, int difficulty);// Checks for win, retunrs int for winner 
+int Checkwin(char* gridPointer, int* roundPointer);// Checks for win, retunrs int for winner 
 int main() {
 
 	// maximize window
@@ -49,17 +49,19 @@ int main() {
 		Sleep(10);
 		RefreshGrid(gridPointer, 0);
 
-		while(Round<8)
+		while (Checkwin(gridPointer, roundPointer) == 0)
 		{
-			if (Round % 2 == 0)
+			if (Round % 2 == 0&& Checkwin(gridPointer, roundPointer) == 0)
 			{
 				Player1Turn(gridPointer,roundPointer);
 				RefreshGrid(gridPointer,0);
+				Checkwin(gridPointer, roundPointer);
 			}
-			if (Round % 2 != 0)
+			if (Round % 2 != 0&& Checkwin(gridPointer, roundPointer) == 0)
 			{
 				ComputerTurn(gridPointer,roundPointer, menu[1]);
 				RefreshGrid(gridPointer,0);
+				Checkwin(gridPointer, roundPointer);
 			}
 		}
 	}
@@ -80,17 +82,19 @@ int main() {
 		Sleep(10);
 		RefreshGrid(gridPointer, 0);
 
-		while (Round < 8)
+		while (Checkwin(gridPointer, roundPointer) == 0)
 		{
-			if (Round % 2 == 0)
+			if (Round % 2 == 0 && Checkwin(gridPointer, roundPointer)==0)
 			{
 				Player1Turn(gridPointer, roundPointer);
 				RefreshGrid(gridPointer,0);
+				Checkwin(gridPointer, roundPointer);
 			}
-			if (Round % 2 != 0)
+			if (Round % 2 != 0 && Checkwin(gridPointer, roundPointer) == 0)
 			{
 				Player2Turn(gridPointer, roundPointer);
 				RefreshGrid(gridPointer,0);
+				Checkwin(gridPointer, roundPointer);
 			}
 		}
 	}
@@ -206,7 +210,7 @@ void Player1Turn(char* gridPointer, int* roundPointer)
 		printf("Player 1:");
 		scanf("%i", &gridPosition);
 		printf("\n");
-		gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
+		//gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 
 		if (*(gridPointer + gridPosition) == 32)//checks if square is empty, 32 asci = space
 		{
@@ -475,7 +479,7 @@ int convertNumpad(int location)
 	return location;
 }
 
-int Checkwin(char* gridPointer, int* roundPointer, int difficulty)
+int Checkwin(char* gridPointer, int* roundPointer)
 {
 	int gridPosition, i;
 	int sum = 0;
@@ -549,13 +553,26 @@ int Checkwin(char* gridPointer, int* roundPointer, int difficulty)
 	switch (sum)
 	{
 	case 0:
-		return 0;
+		if (*roundPointer < 10) {
+			printf("Continue");
+			return 0;
+			
+		}
+		else {
+			return 1;
+			printf("Draw");
+		}
 		break;
 	case 264:
-		return 1;
+		printf("X wins");
+		return 2;
+		
 		break;
 	case 237:
-		return 2;
+		printf("O wins");
+		return 3;
+		
 		break;
 
 	}
+}
