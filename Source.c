@@ -31,7 +31,7 @@ int main() {
 	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty.
 	
 	srand(time(NULL));//seeds random number generator
-	//GameMenu(menuPointer);
+	GameMenu(menuPointer);
 
 	//main loop for player vs computer
 	if (*menuPointer == 1)
@@ -238,7 +238,7 @@ void Player2Turn(char* gridPointer, int* roundPointer)
 		printf("Player 2:");
 		scanf("%i", &gridPosition);
 		printf("\n");
-		gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
+		//gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 
 		if (*(gridPointer + gridPosition) == 32)//checks if square is "empty". 32 asci = space
 		{
@@ -488,8 +488,7 @@ int Checkwin(char* gridPointer, int* roundPointer)
 
 
 	//checks if there is a winning move. 0 = easy, 1 = medium, 2 = hard mode.
-	for (i = 0; i < 2 && sum == 0; i++)
-	{
+	
 		if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
 		{
 			winMove[0] = 0;
@@ -546,14 +545,69 @@ int Checkwin(char* gridPointer, int* roundPointer)
 			winMove[2] = 8;
 			sum = 264;
 		}
+		
 		k = 237;
-
+	if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
+	{
+		winMove[0] = 0;
+		winMove[1] = 1;
+		winMove[2] = 2;
+		sum = 237;
+	}
+	else if (*(gridPointer + 3) + *(gridPointer + 4) + *(gridPointer + 5) == k)
+	{
+		winMove[0] = 3;
+		winMove[1] = 4;
+		winMove[2] = 5;
+		sum = 237;
+	}
+	else if (*(gridPointer + 6) + *(gridPointer + 7) + *(gridPointer + 8) == k)
+	{
+		winMove[0] = 6;
+		winMove[1] = 7;
+		winMove[2] = 8;
+		sum = 237;
+	}
+	else if (*(gridPointer + 0) + *(gridPointer + 4) + *(gridPointer + 8) == k)
+	{
+		winMove[0] = 0;
+		winMove[1] = 4;
+		winMove[2] = 8;
+		sum = 237;
+	}
+	else if (*(gridPointer + 2) + *(gridPointer + 4) + *(gridPointer + 6) == k)
+	{
+		winMove[0] = 2;
+		winMove[1] = 4;
+		winMove[2] = 6;
+		sum = 237;
+	}
+	else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
+	{
+		winMove[0] = 0;
+		winMove[1] = 3;
+		winMove[2] = 6;
+		sum = 237;
+	}
+	else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
+	{
+		winMove[0] = 1;
+		winMove[1] = 4;
+		winMove[2] = 7;
+		sum = 237;
+	}
+	else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
+	{
+		winMove[0] = 2;
+		winMove[1] = 5;
+		winMove[2] = 8;
+		sum = 237;
 	}
 
 	switch (sum)
 	{
 	case 0:
-		if (*roundPointer < 10) {
+		if (*roundPointer < 9) {
 			printf("Continue");
 			return 0;
 			
@@ -566,12 +620,10 @@ int Checkwin(char* gridPointer, int* roundPointer)
 	case 264:
 		printf("X wins");
 		return 2;
-		
 		break;
 	case 237:
 		printf("O wins");
 		return 3;
-		
 		break;
 
 	}
