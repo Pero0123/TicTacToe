@@ -1,4 +1,4 @@
-//Pero
+//Pero. Alex. Sam
 //Tic Tac Toe Project
 //05/03/2023  **  
 
@@ -350,7 +350,7 @@ void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty)
 	while (*roundPointer %2 != 0) //attempts to take turn until succefull
 	{
 		gridPosition = rand() % 9;
-		//printf("%i \n", gridPosition);//temporary
+
 
 		if (*(gridPointer + gridPosition) == 32)//checks if square is "empty". 32 asci = space
 		{
