@@ -115,7 +115,7 @@ int main() {
 		}
 	}
 	//int scorFunc(int scorePointer) 
-		//0 draws 1-xwins  3-owins
+		//1-draws 2-xwins  3-owins
 	
 	return 0;
 }
@@ -636,13 +636,11 @@ int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 
 		printf("Draw");
 		return 1;//returns if draw
-	
 		}
 		break;
 	case 264:
 		*(scorePointer + 1) += 1;//returns if x wins
 		printf("X Wins");
-	
 		return 2;
 		break;
 	case 237:
