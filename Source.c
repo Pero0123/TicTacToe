@@ -10,16 +10,14 @@
 #include<Windows.h>
 
 int GameMenu(int* menuPointer);// prints intro and lets user chose player vs computer or player vs player
-
 void Player1Turn(char * gridPointer, int* roundPointer,int* menuPointer);//handles player ones turn
 void Player2Turn(char* gridPointer, int* roundPointer, int* menuPointer);//handles player twos turn
 void RefreshGrid(char* gridPointer, int delay, int *scorePointer);//clears console and printd grid
-
 void printCharacter(char* gridPointer, int line, int location);//fill grid with characters. used with refresh grid.
 void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handles computers turn
 int convertNumpad(int location); //converts numpad input to relevant grid number
-
 int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer);// Checks for win, retunrs int for winner 
+void Winner(int win);
 
 int main() {
 
@@ -51,9 +49,14 @@ int main() {
 		{
 			*(gridPointer + i) = ' ';
 		}
+		
 		if (replay==3)
 		{
 			GameMenu(menuPointer);//prints out title and menu
+			for (i = 0; i < 3; i++)
+			{
+				*(scorePointer + i) = 0;//resets scores
+			}
 		}
 
 		//main loop for player vs computer
@@ -87,6 +90,7 @@ int main() {
 					win = Checkwin(gridPointer, roundPointer, scorePointer);
 					RefreshGrid(gridPointer, 0, scorePointer);
 				}
+				Winner(win);
 			}
 		}
 
@@ -124,10 +128,10 @@ int main() {
 					win = Checkwin(gridPointer, roundPointer, scorePointer);
 					RefreshGrid(gridPointer, 0, scorePointer);
 				}
-
+				Winner(win);
 			}
 		}
-		printf("Play again?\n1. Yes\n2. No \n3. Back to menu(will reset scores)");
+		printf("\n\n     Play again?\n1. Yes\n2. No \n3. Back to menu(will reset scores)");
 		scanf("%i", &replay);
 	}
 	return 0;
@@ -140,7 +144,7 @@ void RefreshGrid(char* gridPointer, int delay, int *scorePointer)
 
 	system("cls");//clears console
 
-	printf("SCORE: X's = %i      O's = %i      Draws's = %i",*(scorePointer+1), *(scorePointer+2),*scorePointer);
+	printf("\n\n\n    SCORE: X's = %i    O's = %i    Draws's = %i",*(scorePointer+1), *(scorePointer+2),*scorePointer);
 
 	//prints out the game grid accroding to whats stored in grid array. uses printCharacter function to print x or os
 
@@ -240,7 +244,7 @@ void Player1Turn(char* gridPointer, int* roundPointer, int* menuPointer)
 	int gridPosition;
 	while (*roundPointer%2==0)//attempts turn until succefull
 	{
-		printf("Player 1:");
+		printf("    Player 1:");
 		scanf("%i", &gridPosition);
 		printf("\n");
 		if (*(menuPointer + 2) == 1)
@@ -265,12 +269,11 @@ void Player1Turn(char* gridPointer, int* roundPointer, int* menuPointer)
 void Player2Turn(char* gridPointer, int* roundPointer, int* menuPointer)
 {
 
-	int gridPosition;
-
+	int gridPosition;//stores user input
 
 	while (*roundPointer % 2 != 0) //attempts to take turn until succefull
 	{
-		printf("Player 2:");
+		printf("   Player 2:");
 		scanf("%i", &gridPosition);
 		printf("\n");
 
@@ -480,7 +483,7 @@ int GameMenu(int* menuPointer)
 		printf("    Select Difficulty:\n    1. Really Easy\n    2. Easy\n    3. Normal\n");
 		scanf("    %i", menuPointer+1);
 	}
-	printf("Do you want to play with numberpad or number row?\n    1. Yes\n    2.No\n");
+	printf("Do you want to play with numberpad or number row?\n    1. Number pad\n    2.Number Row\n");
 	scanf("    %i", menuPointer + 2);
 }
 
@@ -522,75 +525,80 @@ int convertNumpad(int location)
 	}
 	return location;
 }
-//function to check for win/loss/draw. also incriments score array.
+//function to check for win/loss/draw. also incriments score array. returns 1 for draw, 2 for x win 3 for O win and 0 for continue
 int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 {
-	int gridPosition, i;
+	int gridPosition, i,j;
 	int sum = 0;
 	int k = 264;
 	int winMove[3] = { 0 };
 
 
-	//checks for win/loss/draw
-	
-		if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
+	//checks for x win
+	//rows
+	if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
 		{
-			winMove[0] = 0;
-			winMove[1] = 1;
-			winMove[2] = 2;
-			sum = 264;
-		}
-		else if (*(gridPointer + 3) + *(gridPointer + 4) + *(gridPointer + 5) == k)
-		{
-			winMove[0] = 3;
-			winMove[1] = 4;
-			winMove[2] = 5;
-			sum = 264;
-		}
-		else if (*(gridPointer + 6) + *(gridPointer + 7) + *(gridPointer + 8) == k)
-		{
-			winMove[0] = 6;
-			winMove[1] = 7;
-			winMove[2] = 8;
-			sum = 264;
-		}
-		else if (*(gridPointer + 0) + *(gridPointer + 4) + *(gridPointer + 8) == k)
-		{
-			winMove[0] = 0;
-			winMove[1] = 4;
-			winMove[2] = 8;
-			sum = 264;
-		}
-		else if (*(gridPointer + 2) + *(gridPointer + 4) + *(gridPointer + 6) == k)
-		{
-			winMove[0] = 2;
-			winMove[1] = 4;
-			winMove[2] = 6;
-			sum = 264;
-		}
-		else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
-		{
-			winMove[0] = 0;
-			winMove[1] = 3;
-			winMove[2] = 6;
-			sum = 264;
-		}
-		else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
-		{
-			winMove[0] = 1;
-			winMove[1] = 4;
-			winMove[2] = 7;
-			sum = 264;
-		}
-		else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
-		{
-			winMove[0] = 2;
-			winMove[1] = 5;
-			winMove[2] = 8;
-			sum = 264;
-		}
-		
-		k = 237;
+		winMove[0] = 0;
+		winMove[1] = 1;
+		winMove[2] = 2;
+		sum = 264;
+	}
+	else if (*(gridPointer + 3) + *(gridPointer + 4) + *(gridPointer + 5) == k)
+	{
+		winMove[0] = 3;
+		winMove[1] = 4;
+		winMove[2] = 5;
+		sum = 264;
+	}
+	else if (*(gridPointer + 6) + *(gridPointer + 7) + *(gridPointer + 8) == k)
+	{
+		winMove[0] = 6;
+		winMove[1] = 7;
+		winMove[2] = 8;
+		sum = 264;
+	}
+
+	//diagonals
+	else if (*(gridPointer + 0) + *(gridPointer + 4) + *(gridPointer + 8) == k)
+	{
+		winMove[0] = 0;
+		winMove[1] = 4;
+		winMove[2] = 8;
+		sum = 264;
+	}
+	else if (*(gridPointer + 2) + *(gridPointer + 4) + *(gridPointer + 6) == k)
+	{
+		winMove[0] = 2;
+		winMove[1] = 4;
+		winMove[2] = 6;
+		sum = 264;
+	}
+
+	//checks for 0 win
+	//columbs
+	else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
+	{
+		winMove[0] = 0;
+		winMove[1] = 3;
+		winMove[2] = 6;
+		sum = 264;
+	}
+	else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
+	{
+		winMove[0] = 1;
+		winMove[1] = 4;
+		winMove[2] = 7;
+		sum = 264;
+	}
+	else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
+	{
+		winMove[0] = 2;
+		winMove[1] = 5;
+		winMove[2] = 8;
+		sum = 264;
+	}
+
+	k = 237;
 	if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
 	{
 		winMove[0] = 0;
@@ -648,6 +656,8 @@ int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 		sum = 237;
 	}
 
+
+	//resturns value depending on win/loose/draw/continue
 	switch (sum)
 	{
 	case 0:
@@ -667,6 +677,46 @@ int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 	case 237:
 		*(scorePointer + 2) += 1;//return if O wins
 		return 3;
+		break;
+	}
+}
+
+//prints out winner
+void Winner(int win)
+{
+	switch (win)
+	{
+	case 1:
+		printf("*************   ***   **********");
+		printf("*************   ***   **********");
+		printf("     ***        ***   ***");
+		printf("     ***        ***   *********");
+		printf("     ***        ***   *********");
+		printf("     ***        ***   ***");
+		printf("     ***        ***   **********");
+		printf("     ***        ***   **********");
+		break;
+	case 2:
+		printf("***      ***");printf("  ***          **         ***  ***   ****     ***   **********\n");
+		printf(" ***    ***");printf("    ***        ****       ***   ***   *****    ***   **********\n");
+		printf("  ***  ***");printf("      ***      ******     ***    ***   ******   ***    ***   ***\n");
+		printf("   ******");printf("        ***    ***  ***   ***     ***   *** ***  ***      ***\n");
+		printf("   ******");printf("         ***  ***    *** ***      ***   ***  *** ***        ***\n");
+		printf("  ***  ***"); printf("        ******      ******      ***   ***   ******   ***    ***\n");
+		printf(" ***    ***");printf("         ****        ****       ***   ***    *****   **********\n");
+		printf("***      ***");printf("         **          **        ***   ***     ****   **********\n");
+		break;
+	case 3:
+		printf("   *******");printf("      ***          **         ***  ***   ****     ***   **********\n");
+		printf(" ***********");printf("     ***        ****       ***   ***   *****    ***   **********\n");
+		printf("****     ****");printf("     ***      ******     ***    ***   ******   ***    ***   ***\n");
+		printf("***       ***");printf("      ***    ***  ***   ***     ***   *** ***  ***      ***\n");
+		printf("***       ***");printf("       ***  ***    *** ***      ***   ***  *** ***        ***\n");
+		printf("****     ****");printf("        ******      ******      ***   ***   ******   ***    ***\n");
+		printf(" ***********");printf("          ****        ****       ***   ***    *****   **********\n");
+		printf("   ******* ");printf("            **          **        ***   ***     ****   **********\n");
+		break;
+	default:
 		break;
 	}
 }
