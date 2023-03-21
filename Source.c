@@ -18,6 +18,7 @@ void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handl
 int convertNumpad(int location); //converts numpad input to relevant grid number
 int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer);// Checks for win, retunrs int for winner 
 void Winner(int win);
+int CheckUserInput(int low, int high, int input);//funciton to test if user input is within allowed range low-high
 
 int main() {
 
@@ -131,13 +132,21 @@ int main() {
 				Winner(win);
 			}
 		}
-		printf("\n\n    Play again?\n    1. Yes\n    2. No \n    3. Back to menu(will reset scores)\n");
-		scanf("%i", &replay);
-		if (replay==1)
-		{
-			printf("    Select Difficulty:\n    1. Really Easy\n    2. Easy\n    3. Normal\n");
-			scanf("    %i", menuPointer + 1);
-		}
+
+		do {
+			printf("\n\n    Play again?\n    1. Yes\n    2. No \n    3. Back to menu(will reset scores)\n");
+			scanf("%i", &replay);
+		} while (CheckUserInput(1,3,replay)==1);
+
+			if (replay == 1)
+			{
+				do {
+				printf("    Select Difficulty:\n    1. Really Easy\n    2. Easy\n    3. Normal\n");
+				scanf("    %i", menuPointer + 1);
+			} while (CheckUserInput(1, 3, *(menuPointer + 1)) == 1);
+			}
+		
+		
 	}
 	return 0;
 }
@@ -502,16 +511,22 @@ int GameMenu(int* menuPointer)
 
 
 	//select gamemode
+	do{
 	printf("    Do You Want To Play against:\n    1. The Computer\n    2. Another Player\n ");
 	scanf("    %i", menuPointer);
+	} while (CheckUserInput(1, 2, *menuPointer) == 1);
 
 	if (*menuPointer == 1)
 	{
+		do{
 		printf("    Select Difficulty:\n    1. Really Easy\n    2. Easy\n    3. Normal\n");
 		scanf("    %i", menuPointer+1);
+	} while (CheckUserInput(1, 3, *(menuPointer+1)) == 1);
 	}
+	do{
 	printf("    Do you want to play with numberpad or number row?\n    1. Number pad\n    2. Number Row\n");
 	scanf("    %i", menuPointer + 2);
+	} while (CheckUserInput(1, 3, *(menuPointer + 2)) == 1);
 }
 
 //converts input from numpad to relevant grid position
@@ -714,36 +729,50 @@ void Winner(int win)
 	switch (win)
 	{
 	case 1:
-		printf("*************   ***   **********\n");
-		printf("*************   ***   **********\n");
-		printf("     ***        ***   ***\n");
-		printf("     ***        ***   *********\n");
-		printf("     ***        ***   *********\n");
-		printf("     ***        ***   ***\n");
-		printf("     ***        ***   **********\n");
-		printf("     ***        ***   **********\n");
+		printf("  *************   ***   **********\n");
+		printf("  *************   ***   **********\n");
+		printf("       ***        ***   ***\n");
+		printf("       ***        ***   *********\n");
+		printf("       ***        ***   *********\n");
+		printf("       ***        ***   ***\n");
+		printf("       ***        ***   **********\n");
+		printf("       ***        ***   **********\n");
 		break;
 	case 2:
-		printf("***      ***");printf("  ***          **         ***  ***   ****     ***   **********\n");
-		printf(" ***    ***");printf("    ***        ****       ***   ***   *****    ***   **********\n");
-		printf("  ***  ***");printf("      ***      ******     ***    ***   ******   ***    ***   ***\n");
-		printf("   ******");printf("        ***    ***  ***   ***     ***   *** ***  ***      ***\n");
-		printf("   ******");printf("         ***  ***    *** ***      ***   ***  *** ***        ***\n");
-		printf("  ***  ***"); printf("        ******      ******      ***   ***   ******   ***    ***\n");
-		printf(" ***    ***");printf("         ****        ****       ***   ***    *****   **********\n");
-		printf("***      ***");printf("         **          **        ***   ***     ****   **********\n");
+		printf("  ***      ***");printf("    ***          **         ***  ***   ****     ***   **********\n");
+		printf("   ***    ***");printf("      ***        ****       ***   ***   *****    ***   **********\n");
+		printf("    ***  ***");printf("        ***      ******     ***    ***   ******   ***    ***   ***\n");
+		printf("     ******");printf("          ***    ***  ***   ***     ***   *** ***  ***      ***\n");
+		printf("     ******");printf("           ***  ***    *** ***      ***   ***  *** ***        ***\n");
+		printf("    ***  ***");printf("           ******      ******      ***   ***   ******   ***    ***\n");
+		printf("   ***    ***");printf("           ****        ****       ***   ***    *****   **********\n");
+		printf("  ***      ***");printf("           **          **        ***   ***     ****   **********\n");
 		break;
 	case 3:
-		printf("   *******");printf("      ***          **         ***  ***   ****     ***   **********\n");
-		printf(" ***********");printf("     ***        ****       ***   ***   *****    ***   **********\n");
-		printf("****     ****");printf("     ***      ******     ***    ***   ******   ***    ***   ***\n");
-		printf("***       ***");printf("      ***    ***  ***   ***     ***   *** ***  ***      ***\n");
-		printf("***       ***");printf("       ***  ***    *** ***      ***   ***  *** ***        ***\n");
-		printf("****     ****");printf("        ******      ******      ***   ***   ******   ***    ***\n");
-		printf(" ***********");printf("          ****        ****       ***   ***    *****   **********\n");
-		printf("   ******* ");printf("            **          **        ***   ***     ****   **********\n");
+		printf("     *******");printf("        ***          **         ***  ***   ****     ***   **********\n");
+		printf("   ***********");printf("       ***        ****       ***   ***   *****    ***   **********\n");
+		printf("  ****     ****");printf("       ***      ******     ***    ***   ******   ***    ***   ***\n");
+		printf("  ***       ***");printf("        ***    ***  ***   ***     ***   *** ***  ***      ***\n");
+		printf("  ***       ***");printf("         ***  ***    *** ***      ***   ***  *** ***        ***\n");
+		printf("  ****     ****");printf("          ******      ******      ***   ***   ******   ***    ***\n");
+		printf("   ***********");printf("            ****        ****       ***   ***    *****   **********\n");
+		printf("     ******* ");printf("              **          **        ***   ***     ****   **********\n");
 		break;
 	default:
 		break;
+	}
+}
+
+int CheckUserInput(int low,int high, int input)//function to test if user input is a vallid option
+{
+	if(input >=low && input <=high)
+	{
+		return 0;
+	}
+	else
+	{
+		printf("\n\n     Invalid option!\n\n");
+		fflush(stdin);
+		return 1;
 	}
 }
