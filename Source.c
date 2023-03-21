@@ -16,7 +16,12 @@ void RefreshGrid(char* gridPointer, int delay);//clears console and printd grid
 void printCharacter(char* gridPointer, int line, int location);//fill grid with characters. used with refresh grid.
 void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handles computers turn
 int convertNumpad(int location); //converts numpad input to relevant grid number
+
+int Checkwin(char* gridPointer, int* roundPointer);// Checks for win, retunrs int for winner 
+int scoreFunc(int* scorePointer);
+
 int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer);// Checks for win, retunrs int for winner 
+
 int main() {
 
 	ShowWindow(GetConsoleWindow(), SW_SHOWMAXIMIZED);//maximises window
@@ -31,6 +36,8 @@ int main() {
 	int* scorePointer = &score;
 	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty.
 	char* gridPointer = &gridArray[0];
+
+	
 
 	
 	
@@ -107,6 +114,8 @@ int main() {
 			}
 		}
 	}
+	//int scorFunc(int scorePointer) 
+		//1-draws 2-xwins  3-owins
 	
 	return 0;
 }
@@ -115,7 +124,10 @@ int main() {
 void RefreshGrid(char* gridPointer, int delay)
 {
 	int line = 1, location;
+	int xScore = 0, oScore = 0;
 	system("cls");//clears console
+
+	printf("SCORE: X's = %i      O's = %i",xScore, oScore);
 
 	//prints out the game grid accroding to whats stored in grid array. uses printCharacter function to print x or os
 
@@ -248,10 +260,12 @@ void Player2Turn(char* gridPointer, int* roundPointer, int* menuPointer)
 		printf("Player 2:");
 		scanf("%i", &gridPosition);
 		printf("\n");
+
 		if (*(menuPointer + 2) == 1)
 		{
 			gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 		}
+
 
 		if (*(gridPointer + gridPosition) == 32)//checks if square is "empty". 32 asci = space
 		{
@@ -628,17 +642,19 @@ int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 			return 0;
 		}
 		else {
-			return 1;
-			//returns if draw
-			return 1;
+
+		printf("Draw");
+		return 1;//returns if draw
 		}
 		break;
 	case 264:
 		*(scorePointer + 1) += 1;//returns if x wins
+		printf("X Wins");
 		return 2;
 		break;
 	case 237:
 		*(scorePointer + 2) += 1;//return if O wins
+		printf("O Wins");
 		return 3;
 		break;
 	}
