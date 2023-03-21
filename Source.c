@@ -10,8 +10,8 @@
 #include<Windows.h>
 
 int GameMenu(int* menuPointer);// prints intro and lets user chose player vs computer or player vs player
-void Player1Turn(char * gridPointer, int* roundPointer);//handles player ones turn
-void Player2Turn(char* gridPointer, int* roundPointer);//handles player twos turn
+void Player1Turn(char * gridPointer, int* roundPointer, int* menuPointer);//handles player ones turn
+void Player2Turn(char* gridPointer, int* roundPointer, int* menuPointer);//handles player twos turn
 void RefreshGrid(char* gridPointer, int delay);//clears console and printd grid
 void printCharacter(char* gridPointer, int line, int location);//fill grid with characters. used with refresh grid.
 void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handles computers turn
@@ -23,7 +23,7 @@ int main() {
 
 	//declaring variables
 	char gridArray[3][3] = {' ',' ',' ',' ',' ',' ',' ',' ',' '};//stores the x/o in grid
-	int gridPosition, menu[2]={1,1};//location where player/computer wants to place aan x/o
+	int gridPosition, menu[3]={1,1,1};//location where player/computer wants to place aan x/o
 	int score[3] = { 0,0,0 };//[0] is draws [1] is x wins, [2] is O wins
 	int Round = 0;//variable to keep track of number of turns taken
 	int win = 0;// equal to zero until the game is over
@@ -60,7 +60,7 @@ int main() {
 		{
 			if (Round % 2 == 0 && win == 0)
 			{
-				Player1Turn(gridPointer,roundPointer);
+				Player1Turn(gridPointer,roundPointer, menuPointer);
 				RefreshGrid(gridPointer,0);
 				win = Checkwin(gridPointer, roundPointer, scorePointer);
 			}
@@ -95,13 +95,13 @@ int main() {
 		{
 			if (Round % 2 == 0 && win == 0)
 			{
-				Player1Turn(gridPointer, roundPointer);
+				Player1Turn(gridPointer, roundPointer, menuPointer);
 				RefreshGrid(gridPointer,0);
 				win = Checkwin(gridPointer, roundPointer, scorePointer);
 			}
 			if (Round % 2 != 0 && win == 0)
 			{
-				Player2Turn(gridPointer, roundPointer);
+				Player2Turn(gridPointer, roundPointer, menuPointer);
 				RefreshGrid(gridPointer,0);
 				win = Checkwin(gridPointer, roundPointer, scorePointer);
 			}
@@ -209,7 +209,7 @@ void printCharacter(char* gridPointer, int line, int location)
 }
 
 //promts player for a position and checks if its valid
-void Player1Turn(char* gridPointer, int* roundPointer)
+void Player1Turn(char* gridPointer, int* roundPointer, int* menuPointer)
 {
 	
 	int gridPosition;
@@ -218,8 +218,10 @@ void Player1Turn(char* gridPointer, int* roundPointer)
 		printf("Player 1:");
 		scanf("%i", &gridPosition);
 		printf("\n");
-		gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
-
+		if (*(menuPointer + 2) == 1)
+		{
+			gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
+		}
 		if (*(gridPointer + gridPosition) == 32)//checks if square is empty, 32 asci = space
 		{
 			*(gridPointer + gridPosition) = 88;//replaces sqaure with x
@@ -235,7 +237,7 @@ void Player1Turn(char* gridPointer, int* roundPointer)
 }
 
 //handles turn for player 2
-void Player2Turn(char* gridPointer, int* roundPointer)
+void Player2Turn(char* gridPointer, int* roundPointer, int* menuPointer)
 {
 
 	int gridPosition;
@@ -246,7 +248,10 @@ void Player2Turn(char* gridPointer, int* roundPointer)
 		printf("Player 2:");
 		scanf("%i", &gridPosition);
 		printf("\n");
-		//gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
+		if (*(menuPointer + 2) == 1)
+		{
+			gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
+		}
 
 		if (*(gridPointer + gridPosition) == 32)//checks if square is "empty". 32 asci = space
 		{
@@ -447,6 +452,8 @@ int GameMenu(int* menuPointer)
 		printf("    Select Difficulty:\n    1. Really Easy\n    2. Easy\n    3. Normal\n");
 		scanf("    %i", menuPointer+1);
 	}
+	printf("Do you want to play with numberpad or number row?\n    1. Yes\n    2.No\n");
+	scanf("    %i", menuPointer + 2);
 }
 
 //converts input from numpad to relevant grid position
