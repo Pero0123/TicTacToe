@@ -38,6 +38,8 @@ int main() {
 	char* gridPointer = &gridArray[0];
 
 	
+
+	
 	
 	
 	srand(time(NULL));//seeds random number generator
@@ -122,7 +124,10 @@ int main() {
 void RefreshGrid(char* gridPointer, int delay)
 {
 	int line = 1, location;
+	int xScore = 0, oScore = 0;
 	system("cls");//clears console
+
+	printf("SCORE: X's = %i      O's = %i",xScore, oScore);
 
 	//prints out the game grid accroding to whats stored in grid array. uses printCharacter function to print x or os
 
@@ -253,7 +258,7 @@ void Player2Turn(char* gridPointer, int* roundPointer)
 		printf("Player 2:");
 		scanf("%i", &gridPosition);
 		printf("\n");
-		//gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
+		gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 
 		if (*(gridPointer + gridPosition) == 32)//checks if square is "empty". 32 asci = space
 		{
@@ -628,22 +633,21 @@ int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 			return 0;
 		}
 		else {
-<<<<<<< HEAD
-			
-			printf("Draw");
-=======
-			return 1;
-			//returns if draw
->>>>>>> aa535b32609dd0b9fbe73521cead5f9ee76fb923
-			return 1;
+
+		printf("Draw");
+		return 1;//returns if draw
+	
 		}
 		break;
 	case 264:
 		*(scorePointer + 1) += 1;//returns if x wins
+		printf("X Wins");
+	
 		return 2;
 		break;
 	case 237:
 		*(scorePointer + 2) += 1;//return if O wins
+		printf("O Wins");
 		return 3;
 		break;
 	}
