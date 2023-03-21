@@ -17,6 +17,7 @@ void printCharacter(char* gridPointer, int line, int location);//fill grid with 
 void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handles computers turn
 int convertNumpad(int location); //converts numpad input to relevant grid number
 int Checkwin(char* gridPointer, int* roundPointer);// Checks for win, retunrs int for winner 
+int scoreFunc(int* scorePointer);
 int main() {
 
 	// maximize window
@@ -98,6 +99,8 @@ int main() {
 			}
 		}
 	}
+	//int scorFunc(int scorePointer) 
+		//0 draws 1-xwins  3-owins
 	
 	return 0;
 }
