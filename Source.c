@@ -131,8 +131,13 @@ int main() {
 				Winner(win);
 			}
 		}
-		printf("\n\n     Play again?\n1. Yes\n2. No \n3. Back to menu(will reset scores)");
+		printf("\n\n    Play again?\n    1. Yes\n    2. No \n    3. Back to menu(will reset scores)\n");
 		scanf("%i", &replay);
+		if (replay==1)
+		{
+			printf("    Select Difficulty:\n    1. Really Easy\n    2. Easy\n    3. Normal\n");
+			scanf("    %i", menuPointer + 1);
+		}
 	}
 	return 0;
 }
@@ -483,7 +488,7 @@ int GameMenu(int* menuPointer)
 		printf("    Select Difficulty:\n    1. Really Easy\n    2. Easy\n    3. Normal\n");
 		scanf("    %i", menuPointer+1);
 	}
-	printf("Do you want to play with numberpad or number row?\n    1. Number pad\n    2.Number Row\n");
+	printf("    Do you want to play with numberpad or number row?\n    1. Number pad\n    2. Number Row\n");
 	scanf("    %i", menuPointer + 2);
 }
 
@@ -687,14 +692,14 @@ void Winner(int win)
 	switch (win)
 	{
 	case 1:
-		printf("*************   ***   **********");
-		printf("*************   ***   **********");
-		printf("     ***        ***   ***");
-		printf("     ***        ***   *********");
-		printf("     ***        ***   *********");
-		printf("     ***        ***   ***");
-		printf("     ***        ***   **********");
-		printf("     ***        ***   **********");
+		printf("*************   ***   **********\n");
+		printf("*************   ***   **********\n");
+		printf("     ***        ***   ***\n");
+		printf("     ***        ***   *********\n");
+		printf("     ***        ***   *********\n");
+		printf("     ***        ***   ***\n");
+		printf("     ***        ***   **********\n");
+		printf("     ***        ***   **********\n");
 		break;
 	case 2:
 		printf("***      ***");printf("  ***          **         ***  ***   ****     ***   **********\n");
