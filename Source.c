@@ -12,12 +12,12 @@
 int GameMenu(int* menuPointer);// prints intro and lets user chose player vs computer or player vs player
 void Player1Turn(char * gridPointer, int* roundPointer);//handles player ones turn
 void Player2Turn(char* gridPointer, int* roundPointer);//handles player twos turn
-void RefreshGrid(char* gridPointer, int delay);//clears console and printd grid
+void RefreshGrid(char* gridPointer, int delay, int *scorePointer);//clears console and printd grid
 void printCharacter(char* gridPointer, int line, int location);//fill grid with characters. used with refresh grid.
 void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handles computers turn
 int convertNumpad(int location); //converts numpad input to relevant grid number
 
-int Checkwin(char* gridPointer, int* roundPointer);// Checks for win, retunrs int for winner 
+//int Checkwin(char* gridPointer, int* roundPointer);// Checks for win, retunrs int for winner 
 int scoreFunc(int* scorePointer);
 
 int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer);// Checks for win, retunrs int for winner 
@@ -50,31 +50,31 @@ int main() {
 	if (*menuPointer == 1)
 	{
 		//"animation" for loading the grid at start
-		RefreshGrid(gridPointer, 10);
+		RefreshGrid(gridPointer, 10,scorePointer);
 		system("cls");
 		Sleep(10);
-		RefreshGrid(gridPointer, 0);
-		Sleep(10);
-		system("cls");
-		Sleep(10);
-		RefreshGrid(gridPointer, 0);
+		RefreshGrid(gridPointer, 0, scorePointer);
 		Sleep(10);
 		system("cls");
 		Sleep(10);
-		RefreshGrid(gridPointer, 0);
+		RefreshGrid(gridPointer, 0, scorePointer);
+		Sleep(10);
+		system("cls");
+		Sleep(10);
+		RefreshGrid(gridPointer, 0, scorePointer);
 
 		while (win==0)
 		{
 			if (Round % 2 == 0 && win == 0)
 			{
 				Player1Turn(gridPointer,roundPointer);
-				RefreshGrid(gridPointer,0);
+				RefreshGrid(gridPointer,0, scorePointer);
 				win = Checkwin(gridPointer, roundPointer, scorePointer);
 			}
 			if (Round % 2 != 0&&win==0)
 			{
 				ComputerTurn(gridPointer,roundPointer, menu[1]);//computers turn. menu [1] stores the selected difficulty
-				RefreshGrid(gridPointer,0);
+				RefreshGrid(gridPointer,0, scorePointer);
 				win = Checkwin(gridPointer, roundPointer, scorePointer);
 
 			}
@@ -85,49 +85,49 @@ int main() {
 	if (menu[0] == 2)
 	{
 		//"animation" for loading the grid at start
-		RefreshGrid(gridPointer,10);
+		RefreshGrid(gridPointer,10, scorePointer);
 		system("cls");
 		Sleep(10);
-		RefreshGrid(gridPointer, 0);
-		Sleep(10);
-		system("cls");
-		Sleep(10);
-		RefreshGrid(gridPointer, 0);
+		RefreshGrid(gridPointer, 0, scorePointer);
 		Sleep(10);
 		system("cls");
 		Sleep(10);
-		RefreshGrid(gridPointer, 0);
+		RefreshGrid(gridPointer, 0, scorePointer);
+		Sleep(10);
+		system("cls");
+		Sleep(10);
+		RefreshGrid(gridPointer, 0, scorePointer);
 
 		while (win == 0)
 		{
 			if (Round % 2 == 0 && win == 0)
 			{
 				Player1Turn(gridPointer, roundPointer);
-				RefreshGrid(gridPointer,0);
+				RefreshGrid(gridPointer,0, scorePointer);
 				win = Checkwin(gridPointer, roundPointer, scorePointer);
 			}
 			if (Round % 2 != 0 && win == 0)
 			{
 				Player2Turn(gridPointer, roundPointer);
-				RefreshGrid(gridPointer,0);
+				RefreshGrid(gridPointer,0, scorePointer);
 				win = Checkwin(gridPointer, roundPointer, scorePointer);
 			}
 		}
 	}
 	//int scorFunc(int scorePointer) 
-		//1-draws 2-xwins  3-owins
+		//0-draws 1-xwins  2-owins
 	
 	return 0;
 }
 
 //clears console and prints out the grid
-void RefreshGrid(char* gridPointer, int delay)
+void RefreshGrid(char* gridPointer, int delay, int *scorePointer)
 {
 	int line = 1, location;
-	int xScore = 0, oScore = 0;
+
 	system("cls");//clears console
 
-	printf("SCORE: X's = %i      O's = %i",xScore, oScore);
+	printf("SCORE: X's = %i      O's = %i",*(scorePointer+1), *(scorePointer+2));
 
 	//prints out the game grid accroding to whats stored in grid array. uses printCharacter function to print x or os
 
