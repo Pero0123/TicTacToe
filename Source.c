@@ -19,26 +19,30 @@ int convertNumpad(int location); //converts numpad input to relevant grid number
 int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer);// Checks for win, retunrs int for winner 
 int main() {
 
-	// maximize window
-	ShowWindow(GetConsoleWindow(), SW_SHOWMAXIMIZED);
+	ShowWindow(GetConsoleWindow(), SW_SHOWMAXIMIZED);//maximises window
 
 	//declaring variables
-	char gridArray[3][3] = {' ',' ',' ',' ',' ',' ',' ',' ',' '};
-	char* gridPointer = &gridArray[0];
-	int gridPosition, menu[2]={1,1};
+	char gridArray[3][3] = {' ',' ',' ',' ',' ',' ',' ',' ',' '};//stores the x/o in grid
+	int gridPosition, menu[2]={1,1};//location where player/computer wants to place aan x/o
+	int score[3] = { 0,0,0 };//[0] is draws [1] is x wins, [2] is O wins
 	int Round = 0;//variable to keep track of number of turns taken
+	int win = 0;// equal to zero until the game is over
 	int* roundPointer = &Round;
-	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty.
-	int score[3] = { 0,0,0};//[0] is draws [1] is x wins, [2] is O wins
 	int* scorePointer = &score;
-	int win=0;
+	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty.
+	char* gridPointer = &gridArray[0];
+
+	
+	
+	
 	srand(time(NULL));//seeds random number generator
 
-	GameMenu(menuPointer);
+	GameMenu(menuPointer);//prints out title and menu
 
 	//main loop for player vs computer
 	if (*menuPointer == 1)
 	{
+		//"animation" for loading the grid at start
 		RefreshGrid(gridPointer, 10);
 		system("cls");
 		Sleep(10);
@@ -62,7 +66,7 @@ int main() {
 			}
 			if (Round % 2 != 0&&win==0)
 			{
-				ComputerTurn(gridPointer,roundPointer, menu[1]);
+				ComputerTurn(gridPointer,roundPointer, menu[1]);//computers turn. menu [1] stores the selected difficulty
 				RefreshGrid(gridPointer,0);
 				win = Checkwin(gridPointer, roundPointer, scorePointer);
 
@@ -73,6 +77,7 @@ int main() {
 	//main loop for player vs player
 	if (menu[0] == 2)
 	{
+		//"animation" for loading the grid at start
 		RefreshGrid(gridPointer,10);
 		system("cls");
 		Sleep(10);
@@ -328,6 +333,7 @@ void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty)
 		k = 208;
 	}
 
+
 	//if winning is possible, computer will pick from that row until succesfull
 	while (sum == 190) //attempts to take turn until succefull
 	{
@@ -438,7 +444,7 @@ int GameMenu(int* menuPointer)
 
 	if (*menuPointer == 1)
 	{
-		printf("    Select Difficulty:\n    1. Easy\n    2. Normal\n    3. Hard\n ");
+		printf("    Select Difficulty:\n    1. Really Easy\n    2. Easy\n    3. Normal\n");
 		scanf("    %i", menuPointer+1);
 	}
 }
@@ -481,7 +487,7 @@ int convertNumpad(int location)
 	}
 	return location;
 }
-
+//function to check for win/loss/draw. also incriments score array.
 int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 {
 	int gridPosition, i;
@@ -490,7 +496,7 @@ int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 	int winMove[3] = { 0 };
 
 
-	//checks if there is a winning move. 0 = easy, 1 = medium, 2 = hard mode.
+	//checks for win/loss/draw
 	
 		if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
 		{
@@ -611,25 +617,22 @@ int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 	{
 	case 0:
 		if (*roundPointer < 9) {
-			printf("Continue");
+		//returns if game should continue
 			return 0;
 		}
 		else {
 			return 1;
-			printf("Draw");
+			//returns if draw
 			return 1;
 		}
 		break;
 	case 264:
-		printf("X wins");
-		*(scorePointer + 1) += 1;
+		*(scorePointer + 1) += 1;//returns if x wins
 		return 2;
 		break;
 	case 237:
-		printf("O wins");
-		*(scorePointer + 2) += 1;
+		*(scorePointer + 2) += 1;//return if O wins
 		return 3;
 		break;
-
 	}
 }
