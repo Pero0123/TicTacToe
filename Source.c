@@ -16,8 +16,12 @@ void RefreshGrid(char* gridPointer, int delay);//clears console and printd grid
 void printCharacter(char* gridPointer, int line, int location);//fill grid with characters. used with refresh grid.
 void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handles computers turn
 int convertNumpad(int location); //converts numpad input to relevant grid number
+
 int Checkwin(char* gridPointer, int* roundPointer);// Checks for win, retunrs int for winner 
 int scoreFunc(int* scorePointer);
+
+int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer);// Checks for win, retunrs int for winner 
+
 int main() {
 
 	// maximize window
@@ -30,8 +34,11 @@ int main() {
 	int Round = 0;//variable to keep track of number of turns taken
 	int* roundPointer = &Round;
 	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty.
-	
+	int score[3] = { 0,0,0};//[0] is draws [1] is x wins, [2] is O wins
+	int* scorePointer = &score;
+	int win=0;
 	srand(time(NULL));//seeds random number generator
+
 	GameMenu(menuPointer);
 
 	//main loop for player vs computer
@@ -50,19 +57,20 @@ int main() {
 		Sleep(10);
 		RefreshGrid(gridPointer, 0);
 
-		while (Checkwin(gridPointer, roundPointer) == 0)
+		while (win==0)
 		{
-			if (Round % 2 == 0&& Checkwin(gridPointer, roundPointer) == 0)
+			if (Round % 2 == 0 && win == 0)
 			{
 				Player1Turn(gridPointer,roundPointer);
 				RefreshGrid(gridPointer,0);
-				Checkwin(gridPointer, roundPointer);
+				win = Checkwin(gridPointer, roundPointer, scorePointer);
 			}
-			if (Round % 2 != 0&& Checkwin(gridPointer, roundPointer) == 0)
+			if (Round % 2 != 0&&win==0)
 			{
 				ComputerTurn(gridPointer,roundPointer, menu[1]);
 				RefreshGrid(gridPointer,0);
-				Checkwin(gridPointer, roundPointer);
+				win = Checkwin(gridPointer, roundPointer, scorePointer);
+
 			}
 		}
 	}
@@ -83,19 +91,19 @@ int main() {
 		Sleep(10);
 		RefreshGrid(gridPointer, 0);
 
-		while (Checkwin(gridPointer, roundPointer) == 0)
+		while (win == 0)
 		{
-			if (Round % 2 == 0 && Checkwin(gridPointer, roundPointer)==0)
+			if (Round % 2 == 0 && win == 0)
 			{
 				Player1Turn(gridPointer, roundPointer);
 				RefreshGrid(gridPointer,0);
-				Checkwin(gridPointer, roundPointer);
+				win = Checkwin(gridPointer, roundPointer, scorePointer);
 			}
-			if (Round % 2 != 0 && Checkwin(gridPointer, roundPointer) == 0)
+			if (Round % 2 != 0 && win == 0)
 			{
 				Player2Turn(gridPointer, roundPointer);
 				RefreshGrid(gridPointer,0);
-				Checkwin(gridPointer, roundPointer);
+				win = Checkwin(gridPointer, roundPointer, scorePointer);
 			}
 		}
 	}
@@ -114,9 +122,9 @@ void RefreshGrid(char* gridPointer, int delay)
 	//prints out the game grid accroding to whats stored in grid array. uses printCharacter function to print x or os
 
 	printf("\n\n    ***************************************** \n");Sleep(delay);
-
 	printf("    ***************************************** \n");Sleep(delay);
 	printf("    **       "); printf("    **       "); printf("    **       "); printf("    **       \n");Sleep(delay);
+	
 	for (line = 1; line <= 3; line++)
 	{
 		printf("    **  ");
@@ -126,10 +134,12 @@ void RefreshGrid(char* gridPointer, int delay)
 		}
 		printf("\n");
 	}
+
 	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");Sleep(delay);
 	printf("    ***************************************** \n");Sleep(delay);
 	printf("    ***************************************** \n");Sleep(delay);
 	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");Sleep(delay);
+	
 	for (line = 1; line <= 3; line++)
 	{
 		printf("    **  ");
@@ -140,9 +150,6 @@ void RefreshGrid(char* gridPointer, int delay)
 		printf("\n");
 	}
 	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");Sleep(delay);
-
-	
-
 	printf("    ***************************************** \n");Sleep(delay);
 	printf("    ***************************************** \n");Sleep(delay);
 	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");Sleep(delay);
@@ -159,7 +166,7 @@ void RefreshGrid(char* gridPointer, int delay)
 
 	printf("    **         "); printf("  **         "); printf("  **         "); printf("  **  \n");Sleep(delay);
 	printf("    ***************************************** \n");Sleep(delay);
-	printf("    ***************************************** \n");Sleep(delay);
+	printf("    ***************************************** \n\n\n");Sleep(delay);
 
 }
 
@@ -213,7 +220,7 @@ void Player1Turn(char* gridPointer, int* roundPointer)
 		printf("Player 1:");
 		scanf("%i", &gridPosition);
 		printf("\n");
-		//gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
+		gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 
 		if (*(gridPointer + gridPosition) == 32)//checks if square is empty, 32 asci = space
 		{
@@ -482,7 +489,7 @@ int convertNumpad(int location)
 	return location;
 }
 
-int Checkwin(char* gridPointer, int* roundPointer)
+int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 {
 	int gridPosition, i;
 	int sum = 0;
@@ -613,19 +620,21 @@ int Checkwin(char* gridPointer, int* roundPointer)
 		if (*roundPointer < 9) {
 			printf("Continue");
 			return 0;
-			
 		}
 		else {
-			return 1;
+			
 			printf("Draw");
+			return 1;
 		}
 		break;
 	case 264:
 		printf("X wins");
+		*(scorePointer + 1) += 1;
 		return 2;
 		break;
 	case 237:
 		printf("O wins");
+		*(scorePointer + 2) += 1;
 		return 3;
 		break;
 
