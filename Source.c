@@ -17,7 +17,7 @@ void printCharacter(char* gridPointer, int line, int location, int* menuPointer)
 void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handles computers turn
 int convertNumpad(int location); //converts numpad input to relevant grid number
 int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer);// Checks for win, retunrs int for winner 
-void Winner(int win);//prints out who won
+void Winner(int gameState);//prints out who won
 int CheckUserInput(int low, int high, int input);//funciton to test if user input is within allowed range low-high
 
 int main() {
@@ -29,7 +29,7 @@ int main() {
 	int gridPosition, menu[3]={1,1,1};//location where player/computer wants to place aan x/o
 	int score[3] = { 0,0,0 };//[0] is draws [1] is x wins, [2] is O wins
 	int Round = 0;//variable to keep track of number of turns taken
-	int win = 0,i;// equal to zero until the game is over
+	int gameState = 0,i;// equal to zero until the game is over
 	int* roundPointer = &Round;
 	int* scorePointer = &score;
 	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty. [2] replay. game continues while = 1
@@ -44,12 +44,13 @@ int main() {
 
 		//resets game state except scores
 		Round = 0;
-		win = 0;
+		gameState = 0;
 		for (i = 0; i < 9; i++)
 		{
 			*(gridPointer + i) = ' ';
 		}
 		
+		//loads menu and resets score if user selects main menu
 		if (*(menuPointer+2)==3)
 		{
 			GameMenu(menuPointer);//prints out title and menu
@@ -76,25 +77,26 @@ int main() {
 			Sleep(10);
 			RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 
-			while (win == 0)
+			//loop continues until there is a winner/looser/draw
+			while (gameState == 0)
 			{
-				if (Round % 2 == 0 && win == 0)
+				if (Round % 2 == 0 && gameState == 0)//even rounds
 				{
 					Player1Turn(gridPointer, roundPointer, menuPointer);
-					win = Checkwin(gridPointer, roundPointer, scorePointer);
+					gameState = Checkwin(gridPointer, roundPointer, scorePointer);
 					RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 				}
-				if (Round % 2 != 0 && win == 0)
+				if (Round % 2 != 0 && gameState == 0)//odd rounds
 				{
 					ComputerTurn(gridPointer, roundPointer, menu[1]);//computers turn. menu [1] stores the selected difficulty
-					win = Checkwin(gridPointer, roundPointer, scorePointer);
+					gameState = Checkwin(gridPointer, roundPointer, scorePointer);
 					RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 				}
-				Winner(win);
+				Winner(gameState);
 			}
 		}
 
-		//main loop for player vs player
+		//main loop for player vs player.
 		if (menu[0] == 2)
 		{
 			//"animation" for loading the grid at start
@@ -111,24 +113,24 @@ int main() {
 			Sleep(10);
 			RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 
-
-			while (win == 0)
+			//loop continues until there is a winner/looser/draw
+			while (gameState == 0)
 			{
-				if (Round % 2 == 0 && win == 0)
+				if (Round % 2 == 0 && gameState == 0)//even rounds
 				{
 
 					Player1Turn(gridPointer, roundPointer, menuPointer);
-					win = Checkwin(gridPointer, roundPointer, scorePointer);
+					gameState = Checkwin(gridPointer, roundPointer, scorePointer);
 					RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 				}
-				if (Round % 2 != 0 && win == 0)
+				if (Round % 2 != 0 && gameState == 0)//odd rounds
 				{
 
 					Player2Turn(gridPointer, roundPointer, menuPointer);
-					win = Checkwin(gridPointer, roundPointer, scorePointer);
+					gameState = Checkwin(gridPointer, roundPointer, scorePointer);
 					RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 				}
-				Winner(win);
+				Winner(gameState);
 			}
 		}
 
@@ -726,9 +728,9 @@ int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 }
 
 //prints out winner
-void Winner(int win)
+void Winner(int gameState)
 {
-	switch (win)
+	switch (gameState)
 	{
 	case 1:
 		printf("  *************   ***   **********\n");
