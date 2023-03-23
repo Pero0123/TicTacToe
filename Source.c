@@ -17,7 +17,7 @@ void printCharacter(char* gridPointer, int line, int location, int* menuPointer)
 void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handles computers turn
 int convertNumpad(int location); //converts numpad input to relevant grid number
 int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer);// Checks for win, retunrs int for winner 
-void Winner(int win);
+void Winner(int win);//prints out who won
 int CheckUserInput(int low, int high, int input);//funciton to test if user input is within allowed range low-high
 
 int main() {
@@ -29,18 +29,17 @@ int main() {
 	int gridPosition, menu[3]={1,1,1};//location where player/computer wants to place aan x/o
 	int score[3] = { 0,0,0 };//[0] is draws [1] is x wins, [2] is O wins
 	int Round = 0;//variable to keep track of number of turns taken
-	int win = 0;// equal to zero until the game is over
+	int win = 0,i;// equal to zero until the game is over
 	int* roundPointer = &Round;
 	int* scorePointer = &score;
-	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty.
+	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty. [2] replay. game continues while = 1
 	char* gridPointer = &gridArray[0];
-	int replay = 1,i; //game game loop continue while replay is = 1.
 
 	
 	srand(time(NULL));//seeds random number generator
 
 	GameMenu(menuPointer);//prints out title and menu
-	while (replay == 1||replay ==3)
+	while (*(menuPointer+2) == 1||*(menuPointer+2) ==3)
 	{
 
 		//resets game state except scores
@@ -51,7 +50,7 @@ int main() {
 			*(gridPointer + i) = ' ';
 		}
 		
-		if (replay==3)
+		if (*(menuPointer+2)==3)
 		{
 			GameMenu(menuPointer);//prints out title and menu
 			for (i = 0; i < 3; i++)
@@ -135,10 +134,10 @@ int main() {
 
 		do {
 			printf("\n\n    1. Play Again\n    2. Quit \n    3. Back To Main Menu(will reset scores)\n");
-			scanf("%i", &replay);
-		} while (CheckUserInput(1,3,replay)==1);
+			scanf("%i", &*(menuPointer+2));
+		} while (CheckUserInput(1,3,*(menuPointer+2))==1);
 
-			if (replay == 1)
+			if (*(menuPointer+2) == 1)
 			{
 				do {
 				printf("    Select Difficulty:\n    1. Really Easy\n    2. Easy\n    3. Normal\n");
@@ -766,6 +765,7 @@ void Winner(int win)
 	}
 }
 
+//checks of user input is within the specified range low-high
 int CheckUserInput(int low,int high, int input)//function to test if user input is a vallid option
 {
 	if(input >=low && input <=high)
