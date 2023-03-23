@@ -34,7 +34,7 @@ int main() {
 	int* scorePointer = &score;
 	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty.
 	char* gridPointer = &gridArray[0];
-	int replay = 1,i;
+	int replay = 1,i; //game game loop continue while replay is = 1.
 
 	
 	srand(time(NULL));//seeds random number generator
@@ -134,7 +134,7 @@ int main() {
 		}
 
 		do {
-			printf("\n\n    Play again?\n    1. Yes\n    2. No \n    3. Back to menu(will reset scores)\n");
+			printf("\n\n    1. Play Again\n    2. Quit \n    3. Back To Main Menu(will reset scores)\n");
 			scanf("%i", &replay);
 		} while (CheckUserInput(1,3,replay)==1);
 
@@ -149,6 +149,9 @@ int main() {
 		
 	}
 	return 0;
+
+	system("pause");
+	system("taskkill /F /IM cmd.exe");
 }
 
 //clears console and prints out the grid
@@ -462,7 +465,7 @@ int GameMenu(int* menuPointer)
 
 	system("cls");
 
-	int delay = 30;
+	int delay = 20;
 
 	//Prints title screen
 	//Tic
@@ -526,7 +529,7 @@ int GameMenu(int* menuPointer)
 	do{
 	printf("    Do you want to play with numberpad or number row?\n    1. Number pad\n    2. Number Row\n");
 	scanf("    %i", menuPointer + 2);
-	} while (CheckUserInput(1, 3, *(menuPointer + 2)) == 1);
+	} while (CheckUserInput(1, 2, *(menuPointer + 2)) == 1);
 }
 
 //converts input from numpad to relevant grid position
