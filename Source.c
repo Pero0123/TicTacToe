@@ -26,13 +26,13 @@ int main() {
 
 	//declaring variables
 	char gridArray[3][3] = {' ',' ',' ',' ',' ',' ',' ',' ',' '};//stores the x/o in grid
-	int gridPosition, menu[3]={1,1,1};//location where player/computer wants to place aan x/o
+	int gridPosition, menu[4]={1,1,1,1};//location where player/computer wants to place aan x/o
 	int score[3] = { 0,0,0 };//[0] is draws [1] is x wins, [2] is O wins
 	int Round = 0;//variable to keep track of number of turns taken
 	int gameState = 0,i;// equal to zero until the game is over
 	int* roundPointer = &Round;
 	int* scorePointer = &score;
-	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty. [2] replay. game continues while = 1
+	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty. [2] replay. game continues while = 1. [3] = numpad or numrow
 	char* gridPointer = &gridArray[0];
 
 	
@@ -137,13 +137,14 @@ int main() {
 		do {
 			printf("\n\n    1. Play Again\n    2. Quit \n    3. Back To Main Menu(will reset scores)\n");
 			scanf("%i", &*(menuPointer+2));
+			
 		} while (CheckUserInput(1,3,*(menuPointer+2))==1);
 
 			if (*(menuPointer+2) == 1)
 			{
 				do {
 				printf("    Select Difficulty:\n    1. Really Easy\n    2. Easy\n    3. Normal\n");
-				scanf("    %i", menuPointer + 1);
+				scanf("    %i", (menuPointer + 1));
 			} while (CheckUserInput(1, 3, *(menuPointer + 1)) == 1);
 			}
 		
@@ -257,7 +258,7 @@ void printCharacter(char* gridPointer, int line, int location, int* menuPointer)
 		}
 		else if (line == 2)
 		{
-			if (*(menuPointer + 2) == 2)
+			if (*(menuPointer + 3) == 2)
 			{
 				printf("   %i   ", location);//prints the expty space inside the grid for each line
 			}
@@ -287,7 +288,7 @@ void Player1Turn(char* gridPointer, int* roundPointer, int* menuPointer)
 		printf("    Player 1:");
 		scanf("%i", &gridPosition);
 		printf("\n");
-		if (*(menuPointer + 2) == 1)
+		if (*(menuPointer + 3) == 1)
 		{
 			gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 		}
@@ -317,7 +318,7 @@ void Player2Turn(char* gridPointer, int* roundPointer, int* menuPointer)
 		scanf("%i", &gridPosition);
 		printf("\n");
 
-		if (*(menuPointer + 2) == 1)
+		if (*(menuPointer + 3) == 1)
 		{
 			gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 		}
@@ -529,8 +530,8 @@ int GameMenu(int* menuPointer)
 	}
 	do{
 	printf("    Do you want to play with numberpad or number row?\n    1. Number pad\n    2. Number Row\n");
-	scanf("    %i", menuPointer + 2);
-	} while (CheckUserInput(1, 2, *(menuPointer + 2)) == 1);
+	scanf("    %i", menuPointer + 3);
+	} while (CheckUserInput(1, 2, *(menuPointer + 3)) == 1);
 }
 
 //converts input from numpad to relevant grid position
