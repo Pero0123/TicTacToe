@@ -34,7 +34,6 @@ int main() {
 	int* scorePointer = &score;
 	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty. [2] replay. game continues while = 1. [3] = numpad or numrow
 	char* gridPointer = &gridArray[0];
-
 	
 	srand(time(NULL));//seeds random number generator
 
@@ -95,7 +94,6 @@ int main() {
 				Winner(gameState);
 			}
 		}
-
 		//main loop for player vs player.
 		if (menu[0] == 2)
 		{
@@ -137,7 +135,6 @@ int main() {
 		do {
 			printf("\n\n    1. Play Again\n    2. Quit \n    3. Back To Main Menu(will reset scores)\n");
 			scanf("%i", &*(menuPointer+2));
-			
 		} while (CheckUserInput(1,3,*(menuPointer+2))==1);
 
 			if (*(menuPointer+2) == 1)
@@ -773,12 +770,12 @@ int CheckUserInput(int low,int high, int input)//function to test if user input 
 {
 	if(input >=low && input <=high)
 	{
-		return 0;
+		return 0; // returns o if input is valid
 	}
 	else
 	{
-		printf("\n\n     Invalid option!\n\n");
-		fflush(stdin);
-		return 1;
+		printf("\n\n     Invalid option!\n\n"); //prints if numper entered is outside of allowed range
+		fflush(stdin); //clears input buffer
+		return 1; //returns 1 if input is invalid
 	}
 }
