@@ -17,7 +17,7 @@ void printCharacter(char* gridPointer, int line, int location, int* menuPointer)
 void ComputerTurn(char* gridPointer, int* roundPointer, int difficulty); //handles computers turn
 int convertNumpad(int location); //converts numpad input to relevant grid number
 int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer);// Checks for win, retunrs int for winner 
-void Winner(int win);
+void Winner(int gameState);//prints out who won
 int CheckUserInput(int low, int high, int input);//funciton to test if user input is within allowed range low-high
 
 int main() {
@@ -26,32 +26,31 @@ int main() {
 
 	//declaring variables
 	char gridArray[3][3] = {' ',' ',' ',' ',' ',' ',' ',' ',' '};//stores the x/o in grid
-	int gridPosition, menu[3]={1,1,1};//location where player/computer wants to place aan x/o
+	int gridPosition, menu[4]={1,1,1,1};//location where player/computer wants to place aan x/o
 	int score[3] = { 0,0,0 };//[0] is draws [1] is x wins, [2] is O wins
 	int Round = 0;//variable to keep track of number of turns taken
-	int win = 0;// equal to zero until the game is over
+	int gameState = 0,i;// equal to zero until the game is over
 	int* roundPointer = &Round;
 	int* scorePointer = &score;
-	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty.
+	int* menuPointer = &menu;//stores user options. [0] is opponent, [1] is the difficulty. [2] replay. game continues while = 1. [3] = numpad or numrow
 	char* gridPointer = &gridArray[0];
-	int replay = 1,i;
-
 	
 	srand(time(NULL));//seeds random number generator
 
 	GameMenu(menuPointer);//prints out title and menu
-	while (replay == 1||replay ==3)
+	while (*(menuPointer+2) == 1||*(menuPointer+2) ==3)
 	{
 
 		//resets game state except scores
 		Round = 0;
-		win = 0;
+		gameState = 0;
 		for (i = 0; i < 9; i++)
 		{
 			*(gridPointer + i) = ' ';
 		}
 		
-		if (replay==3)
+		//loads menu and resets score if user selects main menu
+		if (*(menuPointer+2)==3)
 		{
 			GameMenu(menuPointer);//prints out title and menu
 			for (i = 0; i < 3; i++)
@@ -77,25 +76,25 @@ int main() {
 			Sleep(10);
 			RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 
-			while (win == 0)
+			//loop continues until there is a winner/looser/draw
+			while (gameState == 0)
 			{
-				if (Round % 2 == 0 && win == 0)
+				if (Round % 2 == 0 && gameState == 0)//even rounds
 				{
 					Player1Turn(gridPointer, roundPointer, menuPointer);
-					win = Checkwin(gridPointer, roundPointer, scorePointer);
+					gameState = Checkwin(gridPointer, roundPointer, scorePointer);
 					RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 				}
-				if (Round % 2 != 0 && win == 0)
+				if (Round % 2 != 0 && gameState == 0)//odd rounds
 				{
 					ComputerTurn(gridPointer, roundPointer, menu[1]);//computers turn. menu [1] stores the selected difficulty
-					win = Checkwin(gridPointer, roundPointer, scorePointer);
+					gameState = Checkwin(gridPointer, roundPointer, scorePointer);
 					RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 				}
-				Winner(win);
+				Winner(gameState);
 			}
 		}
-
-		//main loop for player vs player
+		//main loop for player vs player.
 		if (menu[0] == 2)
 		{
 			//"animation" for loading the grid at start
@@ -112,43 +111,46 @@ int main() {
 			Sleep(10);
 			RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 
-
-			while (win == 0)
+			//loop continues until there is a winner/looser/draw
+			while (gameState == 0)
 			{
-				if (Round % 2 == 0 && win == 0)
+				if (Round % 2 == 0 && gameState == 0)//even rounds
 				{
 
 					Player1Turn(gridPointer, roundPointer, menuPointer);
-					win = Checkwin(gridPointer, roundPointer, scorePointer);
+					gameState = Checkwin(gridPointer, roundPointer, scorePointer);
 					RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 				}
-				if (Round % 2 != 0 && win == 0)
+				if (Round % 2 != 0 && gameState == 0)//odd rounds
 				{
 
 					Player2Turn(gridPointer, roundPointer, menuPointer);
-					win = Checkwin(gridPointer, roundPointer, scorePointer);
+					gameState = Checkwin(gridPointer, roundPointer, scorePointer);
 					RefreshGrid(gridPointer, 0, scorePointer, menuPointer);
 				}
-				Winner(win);
+				Winner(gameState);
 			}
 		}
 
 		do {
-			printf("\n\n    Play again?\n    1. Yes\n    2. No \n    3. Back to menu(will reset scores)\n");
-			scanf("%i", &replay);
-		} while (CheckUserInput(1,3,replay)==1);
+			printf("\n\n    1. Play Again\n    2. Quit \n    3. Back To Main Menu(will reset scores)\n");
+			scanf("%i", &*(menuPointer+2));
+		} while (CheckUserInput(1,3,*(menuPointer+2))==1);
 
-			if (replay == 1)
+			if (*(menuPointer+2) == 1)
 			{
 				do {
 				printf("    Select Difficulty:\n    1. Really Easy\n    2. Easy\n    3. Normal\n");
-				scanf("    %i", menuPointer + 1);
+				scanf("    %i", (menuPointer + 1));
 			} while (CheckUserInput(1, 3, *(menuPointer + 1)) == 1);
 			}
 		
 		
 	}
 	return 0;
+
+	system("pause");
+	system("taskkill /F /IM cmd.exe");
 }
 
 //clears console and prints out the grid
@@ -253,7 +255,7 @@ void printCharacter(char* gridPointer, int line, int location, int* menuPointer)
 		}
 		else if (line == 2)
 		{
-			if (*(menuPointer + 2) == 2)
+			if (*(menuPointer + 3) == 2)
 			{
 				printf("   %i   ", location);//prints the expty space inside the grid for each line
 			}
@@ -283,7 +285,7 @@ void Player1Turn(char* gridPointer, int* roundPointer, int* menuPointer)
 		printf("    Player 1:");
 		scanf("%i", &gridPosition);
 		printf("\n");
-		if (*(menuPointer + 2) == 1)
+		if (*(menuPointer + 3) == 1)
 		{
 			gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 		}
@@ -313,7 +315,7 @@ void Player2Turn(char* gridPointer, int* roundPointer, int* menuPointer)
 		scanf("%i", &gridPosition);
 		printf("\n");
 
-		if (*(menuPointer + 2) == 1)
+		if (*(menuPointer + 3) == 1)
 		{
 			gridPosition = convertNumpad(gridPosition);//converts numpad input to location on the grid 
 		}
@@ -462,7 +464,7 @@ int GameMenu(int* menuPointer)
 
 	system("cls");
 
-	int delay = 30;
+	int delay = 20;
 
 	//Prints title screen
 	//Tic
@@ -525,8 +527,8 @@ int GameMenu(int* menuPointer)
 	}
 	do{
 	printf("    Do you want to play with numberpad or number row?\n    1. Number pad\n    2. Number Row\n");
-	scanf("    %i", menuPointer + 2);
-	} while (CheckUserInput(1, 3, *(menuPointer + 2)) == 1);
+	scanf("    %i", menuPointer + 3);
+	} while (CheckUserInput(1, 2, *(menuPointer + 3)) == 1);
 }
 
 //converts input from numpad to relevant grid position
@@ -580,121 +582,74 @@ int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 	//rows
 	if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
 		{
-		winMove[0] = 0;
-		winMove[1] = 1;
-		winMove[2] = 2;
 		sum = 264;
 	}
 	else if (*(gridPointer + 3) + *(gridPointer + 4) + *(gridPointer + 5) == k)
 	{
-		winMove[0] = 3;
-		winMove[1] = 4;
-		winMove[2] = 5;
 		sum = 264;
 	}
 	else if (*(gridPointer + 6) + *(gridPointer + 7) + *(gridPointer + 8) == k)
 	{
-		winMove[0] = 6;
-		winMove[1] = 7;
-		winMove[2] = 8;
 		sum = 264;
 	}
 
 	//diagonals
 	else if (*(gridPointer + 0) + *(gridPointer + 4) + *(gridPointer + 8) == k)
 	{
-		winMove[0] = 0;
-		winMove[1] = 4;
-		winMove[2] = 8;
 		sum = 264;
 	}
 	else if (*(gridPointer + 2) + *(gridPointer + 4) + *(gridPointer + 6) == k)
 	{
-		winMove[0] = 2;
-		winMove[1] = 4;
-		winMove[2] = 6;
+		sum = 264;
+	}
+
+	
+	//columbs
+	else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
+	{
+		sum = 264;
+	}
+	else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
+	{
+		sum = 264;
+	}
+	else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
+	{
 		sum = 264;
 	}
 
 	//checks for 0 win
-	//columbs
-	else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
-	{
-		winMove[0] = 0;
-		winMove[1] = 3;
-		winMove[2] = 6;
-		sum = 264;
-	}
-	else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
-	{
-		winMove[0] = 1;
-		winMove[1] = 4;
-		winMove[2] = 7;
-		sum = 264;
-	}
-	else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
-	{
-		winMove[0] = 2;
-		winMove[1] = 5;
-		winMove[2] = 8;
-		sum = 264;
-	}
-
 	k = 237;
 	if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
 	{
-		winMove[0] = 0;
-		winMove[1] = 1;
-		winMove[2] = 2;
 		sum = 237;
 	}
 	else if (*(gridPointer + 3) + *(gridPointer + 4) + *(gridPointer + 5) == k)
 	{
-		winMove[0] = 3;
-		winMove[1] = 4;
-		winMove[2] = 5;
 		sum = 237;
 	}
 	else if (*(gridPointer + 6) + *(gridPointer + 7) + *(gridPointer + 8) == k)
 	{
-		winMove[0] = 6;
-		winMove[1] = 7;
-		winMove[2] = 8;
 		sum = 237;
 	}
 	else if (*(gridPointer + 0) + *(gridPointer + 4) + *(gridPointer + 8) == k)
 	{
-		winMove[0] = 0;
-		winMove[1] = 4;
-		winMove[2] = 8;
 		sum = 237;
 	}
 	else if (*(gridPointer + 2) + *(gridPointer + 4) + *(gridPointer + 6) == k)
 	{
-		winMove[0] = 2;
-		winMove[1] = 4;
-		winMove[2] = 6;
 		sum = 237;
 	}
 	else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
 	{
-		winMove[0] = 0;
-		winMove[1] = 3;
-		winMove[2] = 6;
 		sum = 237;
 	}
 	else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
 	{
-		winMove[0] = 1;
-		winMove[1] = 4;
-		winMove[2] = 7;
 		sum = 237;
 	}
 	else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
 	{
-		winMove[0] = 2;
-		winMove[1] = 5;
-		winMove[2] = 8;
 		sum = 237;
 	}
 
@@ -724,9 +679,9 @@ int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 }
 
 //prints out winner
-void Winner(int win)
+void Winner(int gameState)
 {
-	switch (win)
+	switch (gameState)
 	{
 	case 1:
 		printf("  *************   ***   **********\n");
@@ -763,16 +718,17 @@ void Winner(int win)
 	}
 }
 
+//checks of user input is within the specified range low-high
 int CheckUserInput(int low,int high, int input)//function to test if user input is a vallid option
 {
 	if(input >=low && input <=high)
 	{
-		return 0;
+		return 0; // returns o if input is valid
 	}
 	else
 	{
-		printf("\n\n     Invalid option!\n\n");
-		fflush(stdin);
-		return 1;
+		printf("\n\n     Invalid option!\n\n"); //prints if numper entered is outside of allowed range
+		fflush(stdin); //clears input buffer
+		return 1; //returns 1 if input is invalid
 	}
 }
