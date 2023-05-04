@@ -582,121 +582,74 @@ int Checkwin(char* gridPointer, int* roundPointer, int* scorePointer)
 	//rows
 	if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
 		{
-		winMove[0] = 0;
-		winMove[1] = 1;
-		winMove[2] = 2;
 		sum = 264;
 	}
 	else if (*(gridPointer + 3) + *(gridPointer + 4) + *(gridPointer + 5) == k)
 	{
-		winMove[0] = 3;
-		winMove[1] = 4;
-		winMove[2] = 5;
 		sum = 264;
 	}
 	else if (*(gridPointer + 6) + *(gridPointer + 7) + *(gridPointer + 8) == k)
 	{
-		winMove[0] = 6;
-		winMove[1] = 7;
-		winMove[2] = 8;
 		sum = 264;
 	}
 
 	//diagonals
 	else if (*(gridPointer + 0) + *(gridPointer + 4) + *(gridPointer + 8) == k)
 	{
-		winMove[0] = 0;
-		winMove[1] = 4;
-		winMove[2] = 8;
 		sum = 264;
 	}
 	else if (*(gridPointer + 2) + *(gridPointer + 4) + *(gridPointer + 6) == k)
 	{
-		winMove[0] = 2;
-		winMove[1] = 4;
-		winMove[2] = 6;
+		sum = 264;
+	}
+
+	
+	//columbs
+	else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
+	{
+		sum = 264;
+	}
+	else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
+	{
+		sum = 264;
+	}
+	else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
+	{
 		sum = 264;
 	}
 
 	//checks for 0 win
-	//columbs
-	else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
-	{
-		winMove[0] = 0;
-		winMove[1] = 3;
-		winMove[2] = 6;
-		sum = 264;
-	}
-	else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
-	{
-		winMove[0] = 1;
-		winMove[1] = 4;
-		winMove[2] = 7;
-		sum = 264;
-	}
-	else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
-	{
-		winMove[0] = 2;
-		winMove[1] = 5;
-		winMove[2] = 8;
-		sum = 264;
-	}
-
 	k = 237;
 	if (*(gridPointer + 0) + *(gridPointer + 1) + *(gridPointer + 2) == k)
 	{
-		winMove[0] = 0;
-		winMove[1] = 1;
-		winMove[2] = 2;
 		sum = 237;
 	}
 	else if (*(gridPointer + 3) + *(gridPointer + 4) + *(gridPointer + 5) == k)
 	{
-		winMove[0] = 3;
-		winMove[1] = 4;
-		winMove[2] = 5;
 		sum = 237;
 	}
 	else if (*(gridPointer + 6) + *(gridPointer + 7) + *(gridPointer + 8) == k)
 	{
-		winMove[0] = 6;
-		winMove[1] = 7;
-		winMove[2] = 8;
 		sum = 237;
 	}
 	else if (*(gridPointer + 0) + *(gridPointer + 4) + *(gridPointer + 8) == k)
 	{
-		winMove[0] = 0;
-		winMove[1] = 4;
-		winMove[2] = 8;
 		sum = 237;
 	}
 	else if (*(gridPointer + 2) + *(gridPointer + 4) + *(gridPointer + 6) == k)
 	{
-		winMove[0] = 2;
-		winMove[1] = 4;
-		winMove[2] = 6;
 		sum = 237;
 	}
 	else if (*(gridPointer + 0) + *(gridPointer + 3) + *(gridPointer + 6) == k)
 	{
-		winMove[0] = 0;
-		winMove[1] = 3;
-		winMove[2] = 6;
 		sum = 237;
 	}
 	else if (*(gridPointer + 1) + *(gridPointer + 4) + *(gridPointer + 7) == k)
 	{
-		winMove[0] = 1;
-		winMove[1] = 4;
-		winMove[2] = 7;
 		sum = 237;
 	}
 	else if (*(gridPointer + 2) + *(gridPointer + 5) + *(gridPointer + 8) == k)
 	{
-		winMove[0] = 2;
-		winMove[1] = 5;
-		winMove[2] = 8;
 		sum = 237;
 	}
 
